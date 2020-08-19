@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".register.DetailsActivity"></activity>
+        <activity
+            android:name=".school.SchoolActivity"
+            android:label="@string/title_activity_school"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".register.DetailsActivity" />
         <activity android:name=".reset.ResetActivity" />
         <activity android:name=".register.RegisterActivity" />
         <activity android:name=".login.LoginActivity" />
