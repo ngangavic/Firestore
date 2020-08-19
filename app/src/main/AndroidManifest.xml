@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".reset.ResetActivity"/>
+        <activity android:name=".register.DetailsActivity"></activity>
+        <activity android:name=".reset.ResetActivity" />
         <activity android:name=".register.RegisterActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".MainActivity">

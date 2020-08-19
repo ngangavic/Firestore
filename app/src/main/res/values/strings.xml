@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Firestore</string>
-    <string name="intro_text" >
+    <string name="intro_text">
         Welcome to School Results App.\n
         This app makes you manage schools results anywhere anytime.\n
         It simplifies the management of school results.\n
