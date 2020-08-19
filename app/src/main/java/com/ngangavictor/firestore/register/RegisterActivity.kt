@@ -105,29 +105,33 @@ class RegisterActivity : AppCompatActivity() {
                 val sdf = SimpleDateFormat("dd/M/yyyy",Locale.getDefault())
                 val currentDate = sdf.format(Date())
 
-                val school= hashMapOf(
-                    "email" to email,
-                    "dateOfReg" to currentDate
-                )
-
                 auth.createUserWithEmailAndPassword(email,password)
                     .addOnCompleteListener {
                         if (it.isSuccessful){
                             auth.currentUser?.sendEmailVerification()
+
+                            val school= hashMapOf(
+                                "uid" to auth.currentUser?.uid.toString(),
+                                "email" to email,
+                                "dateOfReg" to currentDate
+                            )
 
                             database.collection("schools").add(school)
                                 .addOnCompleteListener {   doc->
                                     if (doc.isSuccessful){
                                         alert.cancel()
                                         messageAlert("Success","You were registered successfully. Check your email inbox for email verification.")
+                                    clearText()
                                     }else{
                                         alert.cancel()
                                         messageAlert("Error","Error: "+doc.exception?.message)
+                                        clearText()
                                     }
                                 }
                             }else{
                             alert.cancel()
                             messageAlert("Error","Error: "+it.exception?.message)
+                            clearText()
                         }
                     }
 
@@ -168,6 +172,11 @@ class RegisterActivity : AppCompatActivity() {
         }
         alert=messageAlert.create()
         alert.show()
+    }
+
+    private fun clearText(){
+        editTextEmail.text.toString()
+        editTextPassword.text.toString()
     }
 
 }
