@@ -1,5 +1,6 @@
 package com.ngangavictor.firestore
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,71 +10,30 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.ngangavictor.firestore.login.LoginActivity
+import com.ngangavictor.firestore.register.RegisterActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var firestoreDb: FirebaseFirestore
-    private lateinit var editTextFName: EditText
-    private lateinit var editTextLName: EditText
-    private lateinit var editTextDate: EditText
-    private lateinit var buttonAdd: Button
+    private lateinit var buttonRegister: Button
+    private lateinit var buttonLogin: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        firestoreDb = Firebase.firestore
-        editTextFName = findViewById(R.id.editTextFName)
-        editTextLName = findViewById(R.id.editTextLName)
-        editTextDate = findViewById(R.id.editTextDate)
-        buttonAdd = findViewById(R.id.buttonAdd)
+        buttonRegister = findViewById(R.id.buttonRegister)
+        buttonLogin = findViewById(R.id.buttonLogin)
 
-        buttonAdd.setOnClickListener {
-            addData()
-        }
-    }
-
-    private fun addData() {
-        val fName = editTextFName.text.toString()
-        val lName = editTextLName.text.toString()
-        val date = editTextDate.text.toString()
-
-        when {
-            TextUtils.isEmpty(fName) -> {
-                editTextFName.requestFocus()
-                editTextFName.error = "Cannot be empty"
-            }
-            TextUtils.isEmpty(lName) -> {
-                editTextLName.requestFocus()
-                editTextLName.error = "Cannot be empty"
-            }
-            TextUtils.isEmpty(date) -> {
-                editTextDate.requestFocus()
-                editTextDate.error = "Cannot be empty"
-            }
-            else -> {
-                val user = hashMapOf(
-                        "first" to fName,
-                        "last" to lName,
-                        "date" to date
-                )
-                firestoreDb.collection("users").add(user)
-                        .addOnFailureListener {
-                            Snackbar.make(findViewById(android.R.id.content), "Error: " + it.message, Snackbar.LENGTH_LONG).show()
-                        }
-                        .addOnSuccessListener {
-                            clearText()
-                            Snackbar.make(findViewById(android.R.id.content), "Success: " + it.id, Snackbar.LENGTH_LONG).show()
-                        }
-            }
+        buttonRegister.setOnClickListener {
+           startActivity(Intent(this,RegisterActivity::class.java))
+            finish()
         }
 
-    }
-
-    private fun clearText(){
-        editTextFName.text.clear()
-        editTextLName.text.clear()
-        editTextDate.text.clear()
+        buttonLogin.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java))
+            finish()
+        }
     }
 
 }
