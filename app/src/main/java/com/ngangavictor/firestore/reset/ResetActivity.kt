@@ -50,9 +50,11 @@ class ResetActivity : AppCompatActivity() {
                         if (it.isSuccessful) {
                             alert.cancel()
                             messageAlert("Success", "Password reset link sent your email.")
+                            clearText()
                         } else {
                             alert.cancel()
                             messageAlert("Error", "Error: " + it.exception?.message)
+                            clearText()
                         }
                     }
             }
@@ -88,6 +90,10 @@ class ResetActivity : AppCompatActivity() {
         }
         alert=messageAlert.create()
         alert.show()
+    }
+
+    private fun clearText(){
+        editTextEmail.text.clear()
     }
 
 }

@@ -175,8 +175,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun clearText(){
-        editTextEmail.text.toString()
-        editTextPassword.text.toString()
+        editTextEmail.text.clear()
+        editTextPassword.text.clear()
     }
 
 }

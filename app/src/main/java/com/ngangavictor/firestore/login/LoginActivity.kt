@@ -87,14 +87,17 @@ class LoginActivity : AppCompatActivity() {
                                 //check data
                                 alert.cancel()
                                 messageAlert("Success","Login successful")
+                                clearText()
                             }else{
                                 auth.currentUser?.sendEmailVerification()
                                 alert.cancel()
                                 messageAlert("Alert","Please verify your email address.")
+                                clearText()
                             }
                         }else{
                             alert.cancel()
                             messageAlert("Error","Error: "+it.exception?.message)
+                            clearText()
                         }
                     }
 
@@ -121,6 +124,11 @@ class LoginActivity : AppCompatActivity() {
         }
         alert=messageAlert.create()
         alert.show()
+    }
+
+    private fun clearText(){
+        editTextEmail.text.clear()
+        editTextPassword.text.clear()
     }
 
 
