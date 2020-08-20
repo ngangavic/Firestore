@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
+            android:textAllCaps="true"
             android:hint="School Name" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -50,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:hint="School contact phone number" />
+            android:hint="School phone number eg. 070..." />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -84,7 +85,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="P.O Box address" />
+            android:textAllCaps="true"
+            android:hint="P.O Box address eg. P.O Box 100,Nairobi" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -101,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Location (County, town)"
+            android:textAllCaps="true"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
