@@ -116,7 +116,7 @@ class RegisterActivity : AppCompatActivity() {
                                 "dateOfReg" to currentDate
                             )
 
-                            database.collection("schools").add(school)
+                            database.collection("schools").document(auth.currentUser!!.uid).set(school)
                                 .addOnCompleteListener {   doc->
                                     if (doc.isSuccessful){
                                         alert.cancel()
