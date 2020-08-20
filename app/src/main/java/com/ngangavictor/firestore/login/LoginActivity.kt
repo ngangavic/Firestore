@@ -4,9 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -15,8 +17,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.register.DetailsActivity
 import com.ngangavictor.firestore.register.RegisterActivity
 import com.ngangavictor.firestore.reset.ResetActivity
+import com.ngangavictor.firestore.school.SchoolActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,6 +68,19 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    private fun checkDocument(){
+        database.collection("schools").document(auth.currentUser!!.uid).get()
+            .addOnSuccessListener {
+                if (it.data!!.size==3){
+                    startActivity(Intent(this@LoginActivity,DetailsActivity::class.java))
+                    finish()
+                }else{
+                    startActivity(Intent(this@LoginActivity,SchoolActivity::class.java))
+                    finish()
+                }
+            }
+    }
+
     private fun login() {
         val email = editTextEmail.text.toString()
         val password = editTextPassword.text.toString()
@@ -88,6 +105,7 @@ class LoginActivity : AppCompatActivity() {
                                 alert.cancel()
                                 messageAlert("Success","Login successful")
                                 clearText()
+                                checkDocument()
                             }else{
                                 auth.currentUser?.sendEmailVerification()
                                 alert.cancel()
