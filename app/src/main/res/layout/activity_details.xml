@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:text="School Details"
         android:textAlignment="center"
-        android:textStyle="bold"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,9 +32,9 @@
             android:id="@+id/editTextSchoolName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="School Name"
             android:inputType="textPersonName"
-            android:textAllCaps="true"
-            android:hint="School Name" />
+            android:textAllCaps="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -50,8 +50,8 @@
             android:id="@+id/editTextPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:hint="School phone number eg. 070..." />
+            android:hint="School phone number eg. 070..."
+            android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -67,8 +67,8 @@
             android:id="@+id/editTextPopulation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="School population" />
+            android:hint="School population"
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -84,9 +84,9 @@
             android:id="@+id/editTextAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="P.O Box address eg. P.O Box 100,Nairobi"
             android:inputType="text"
-            android:textAllCaps="true"
-            android:hint="P.O Box address eg. P.O Box 100,Nairobi" />
+            android:textAllCaps="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -103,8 +103,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Location (County, town)"
-            android:textAllCaps="true"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textAllCaps="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

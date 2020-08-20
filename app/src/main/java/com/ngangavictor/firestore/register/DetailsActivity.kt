@@ -50,7 +50,7 @@ class DetailsActivity : AppCompatActivity() {
         db = Firebase.firestore
         auth = Firebase.auth
 
-        localSharedPreferences= LocalSharedPreferences(this@DetailsActivity)
+        localSharedPreferences = LocalSharedPreferences(this@DetailsActivity)
 
         buttonContinue.setOnClickListener {
             saveDetails()
@@ -119,12 +119,12 @@ class DetailsActivity : AppCompatActivity() {
                     .set(school, SetOptions.merge())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            localSharedPreferences.saveSchoolDetailsPref("school_details","yes")
+                            localSharedPreferences.saveSchoolDetailsPref("school_details", "yes")
                             alert.cancel()
                             startActivity(Intent(this@DetailsActivity, SchoolActivity::class.java))
                             finish()
                         } else {
-                            localSharedPreferences.saveSchoolDetailsPref("school_details","no")
+                            localSharedPreferences.saveSchoolDetailsPref("school_details", "no")
                             alert.cancel()
                             messageAlert("Error", "Message: " + it.exception!!.message.toString())
                         }

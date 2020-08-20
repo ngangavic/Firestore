@@ -18,9 +18,6 @@ import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.login.LoginActivity
 import com.ngangavictor.firestore.reset.ResetActivity
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -56,12 +53,12 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         buttonLogin.setOnClickListener {
-            startActivity(Intent(this,LoginActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
 
         buttonReset.setOnClickListener {
-            startActivity(Intent(this,ResetActivity::class.java))
+            startActivity(Intent(this, ResetActivity::class.java))
             finish()
         }
 
@@ -102,35 +99,39 @@ class RegisterActivity : AppCompatActivity() {
             else -> {
                 loadingAlert()
 
-                val sdf = SimpleDateFormat("dd/M/yyyy",Locale.getDefault())
+                val sdf = SimpleDateFormat("dd/M/yyyy", Locale.getDefault())
                 val currentDate = sdf.format(Date())
 
-                auth.createUserWithEmailAndPassword(email,password)
+                auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener {
-                        if (it.isSuccessful){
+                        if (it.isSuccessful) {
                             auth.currentUser?.sendEmailVerification()
 
-                            val school= hashMapOf(
+                            val school = hashMapOf(
                                 "uid" to auth.currentUser?.uid.toString(),
                                 "email" to email,
                                 "dateOfReg" to currentDate
                             )
 
-                            database.collection("schools").document(auth.currentUser!!.uid).set(school)
-                                .addOnCompleteListener {   doc->
-                                    if (doc.isSuccessful){
+                            database.collection("schools").document(auth.currentUser!!.uid)
+                                .set(school)
+                                .addOnCompleteListener { doc ->
+                                    if (doc.isSuccessful) {
                                         alert.cancel()
-                                        messageAlert("Success","You were registered successfully. Check your email inbox for email verification.")
-                                    clearText()
-                                    }else{
+                                        messageAlert(
+                                            "Success",
+                                            "You were registered successfully. Check your email inbox for email verification."
+                                        )
+                                        clearText()
+                                    } else {
                                         alert.cancel()
-                                        messageAlert("Error","Error: "+doc.exception?.message)
+                                        messageAlert("Error", "Error: " + doc.exception?.message)
                                         clearText()
                                     }
                                 }
-                            }else{
+                        } else {
                             alert.cancel()
-                            messageAlert("Error","Error: "+it.exception?.message)
+                            messageAlert("Error", "Error: " + it.exception?.message)
                             clearText()
                         }
                     }
@@ -162,19 +163,19 @@ class RegisterActivity : AppCompatActivity() {
         messageAlert.setTitle(title)
         messageAlert.setMessage(message)
         messageAlert.setPositiveButton("OK") { dialog, _ ->
-            if (title=="Success"){
+            if (title == "Success") {
                 auth.signOut()
-             startActivity(Intent(this,LoginActivity::class.java))
+                startActivity(Intent(this, LoginActivity::class.java))
                 finish()
-            }else {
+            } else {
                 dialog.cancel()
             }
         }
-        alert=messageAlert.create()
+        alert = messageAlert.create()
         alert.show()
     }
 
-    private fun clearText(){
+    private fun clearText() {
         editTextEmail.text.clear()
         editTextPassword.text.clear()
     }

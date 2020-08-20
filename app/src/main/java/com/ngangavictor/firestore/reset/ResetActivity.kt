@@ -88,11 +88,11 @@ class ResetActivity : AppCompatActivity() {
         messageAlert.setPositiveButton("OK") { dialog, _ ->
             dialog.cancel()
         }
-        alert=messageAlert.create()
+        alert = messageAlert.create()
         alert.show()
     }
 
-    private fun clearText(){
+    private fun clearText() {
         editTextEmail.text.clear()
     }
 

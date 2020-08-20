@@ -1,16 +1,12 @@
 package com.ngangavictor.firestore
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
 import android.widget.Button
-import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.login.LoginActivity
 import com.ngangavictor.firestore.register.DetailsActivity
@@ -34,36 +30,40 @@ class MainActivity : AppCompatActivity() {
         buttonRegister = findViewById(R.id.buttonRegister)
         buttonLogin = findViewById(R.id.buttonLogin)
 
-        auth=Firebase.auth
+        auth = Firebase.auth
 
-        localSharedPreferences= LocalSharedPreferences(this@MainActivity)
+        localSharedPreferences = LocalSharedPreferences(this@MainActivity)
 
         buttonRegister.setOnClickListener {
-           startActivity(Intent(this,RegisterActivity::class.java))
+            startActivity(Intent(this, RegisterActivity::class.java))
             finish()
         }
 
         buttonLogin.setOnClickListener {
-            startActivity(Intent(this,LoginActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
 
     override fun onStart() {
         super.onStart()
-        if (auth.currentUser!=null){
-            if (auth.currentUser!!.isEmailVerified){
-                if (localSharedPreferences.getSchoolDetailsPref("school_details")=="yes") {
+        if (auth.currentUser != null) {
+            if (auth.currentUser!!.isEmailVerified) {
+                if (localSharedPreferences.getSchoolDetailsPref("school_details") == "yes") {
                     startActivity(Intent(this@MainActivity, SchoolActivity::class.java))
                     finish()
-                }else{
+                } else {
                     startActivity(Intent(this@MainActivity, DetailsActivity::class.java))
                     finish()
                 }
-            }else{
+            } else {
                 auth.currentUser!!.sendEmailVerification()
                 auth.signOut()
-                Snackbar.make(findViewById(android.R.id.content),"Please verify your email. Check your email inbox",Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Please verify your email. Check your email inbox",
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         }
     }
