@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ngangavictor.firestore.R
 
-class SlideshowFragment : Fragment() {
+class ExamFragment : Fragment() {
 
-    private lateinit var slideshowViewModel: SlideshowViewModel
+    private lateinit var examViewModel: ExamViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        slideshowViewModel =
-            ViewModelProviders.of(this).get(SlideshowViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
+        examViewModel =
+            ViewModelProviders.of(this).get(ExamViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_exam, container, false)
         val textView: TextView = root.findViewById(R.id.text_slideshow)
-        slideshowViewModel.text.observe(viewLifecycleOwner, Observer {
+        examViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
