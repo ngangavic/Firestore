@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -65,7 +64,7 @@ class ClassFragment : Fragment() {
             LinearLayoutManager(requireContext())
         recyclerViewClasses.setHasFixedSize(true)
 
-        classList=ArrayList()
+        classList = ArrayList()
 
         fabAddClass.setOnClickListener {
             addClassAlert()
@@ -86,14 +85,14 @@ class ClassFragment : Fragment() {
     }
 
 
-    private fun getClasses(){
-        database.collection("classes").document(auth.currentUser!!.uid).
-                addSnapshotListener { value, error ->
+    private fun getClasses() {
+        database.collection("classes").document(auth.currentUser!!.uid)
+            .addSnapshotListener { value, error ->
 //                    Log.e("DATA",value!!.data!!.values.toString())
-                    for (i in value!!.data!!.values){
-                        Log.e("DATA",i.toString())
-                    }
+                for (i in value!!.data!!.values) {
+                    Log.e("DATA", i.toString())
                 }
+            }
     }
 
 
@@ -120,9 +119,9 @@ class ClassFragment : Fragment() {
     }
 
     private fun addClass(className: String) {
-    loadingAlert()
+        loadingAlert()
         val data = hashMapOf(
-            className.replace(" ","") to className
+            className.replace(" ", "") to className
         )
 
         database.collection("classes").document(auth.currentUser!!.uid)
@@ -142,11 +141,11 @@ class ClassFragment : Fragment() {
             }
     }
 
-    private fun loadingAlert(){
-        val loadingAlert=AlertDialog.Builder(requireContext())
+    private fun loadingAlert() {
+        val loadingAlert = AlertDialog.Builder(requireContext())
         loadingAlert.setCancelable(false)
         loadingAlert.setMessage("Adding class ...")
-        alert=loadingAlert.create()
+        alert = loadingAlert.create()
         alert.show()
     }
 

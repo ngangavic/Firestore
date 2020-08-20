@@ -9,11 +9,11 @@ import com.google.firebase.ktx.Firebase
 
 class FirestoreRepository {
 
-    private val database:FirebaseFirestore=Firebase.firestore
-    private val auth:FirebaseAuth=Firebase.auth
+    private val database: FirebaseFirestore = Firebase.firestore
+    private val auth: FirebaseAuth = Firebase.auth
 
-    fun getClasses():DocumentReference{
-      return  database.collection("classes").document(auth.currentUser!!.uid)
+    fun getClasses(): DocumentReference {
+        return database.collection("classes").document(auth.currentUser!!.uid)
     }
 
 

@@ -9,22 +9,22 @@ import com.ngangavictor.firestore.repos.FirestoreRepository
 
 class ClassViewModel : ViewModel() {
 
-    var firestoreRepository=FirestoreRepository()
+    var firestoreRepository = FirestoreRepository()
 
     var classList: MutableList<ClassModel> = mutableListOf()
 
     private val classData = MutableLiveData<List<ClassModel>>()
 
-    fun getClasses(): LiveData<List<ClassModel>>{
+    fun getClasses(): LiveData<List<ClassModel>> {
         classList.clear()
         firestoreRepository.getClasses().addSnapshotListener { value, error ->
 
-            for (i in value!!.data!!.values){
-                Log.e("DATA",i.toString())
-                classList.add(ClassModel(i.toString().take(1),i.toString()))
+            for (i in value!!.data!!.values) {
+                Log.e("DATA", i.toString())
+                classList.add(ClassModel(i.toString().take(1), i.toString()))
             }
 
-            classData.value=classList
+            classData.value = classList
 
         }
 
