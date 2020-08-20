@@ -6,35 +6,35 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/classFragment"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_class"
             android:title="Class" />
         <item
             android:id="@+id/subjectFragment"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_subject"
             android:title="Subjects" />
         <item
             android:id="@+id/examFragment"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_exam"
             android:title="Exams" />
 
         <item
             android:id="@+id/gradeFragment"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_grade"
             android:title="Grades" />
 
         <item
             android:id="@+id/studentFragment"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_student"
             android:title="Students" />
 
         <item
             android:id="@+id/teacherFragment"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_teacher"
             android:title="Teachers" />
 
         <item
             android:id="@+id/resultFragment"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_result"
             android:title="Results" />
 
     </group>
