@@ -72,9 +72,13 @@ class LoginActivity : AppCompatActivity() {
         database.collection("schools").document(auth.currentUser!!.uid).get()
             .addOnSuccessListener {
                 if (it.data!!.size==3){
+                    alert.cancel()
+                    clearText()
                     startActivity(Intent(this@LoginActivity,DetailsActivity::class.java))
                     finish()
                 }else{
+                    alert.cancel()
+                    clearText()
                     startActivity(Intent(this@LoginActivity,SchoolActivity::class.java))
                     finish()
                 }
@@ -102,9 +106,6 @@ class LoginActivity : AppCompatActivity() {
                         if (it.isSuccessful){
                             if(auth.currentUser!!.isEmailVerified){
                                 //check data
-                                alert.cancel()
-                                messageAlert("Success","Login successful")
-                                clearText()
                                 checkDocument()
                             }else{
                                 auth.currentUser?.sendEmailVerification()
