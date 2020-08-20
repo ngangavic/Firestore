@@ -3,23 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
-
+    app:startDestination="@id/classFragment">
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/classFragment"
         android:name="com.ngangavictor.firestore.school.ui.classes.ClassFragment"
-        android:label="@string/menu_home"
+        android:label="Class"
         tools:layout="@layout/fragment_class" />
-
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.ngangavictor.firestore.school.ui.subjects.SubjectFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_subject" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/examFragment"
         android:name="com.ngangavictor.firestore.school.ui.exams.ExamFragment"
-        android:label="@string/menu_slideshow"
+        android:label="Exam"
         tools:layout="@layout/fragment_exam" />
+    <fragment
+        android:id="@+id/subjectFragment"
+        android:name="com.ngangavictor.firestore.school.ui.subjects.SubjectFragment"
+        android:label="Subject"
+        tools:layout="@layout/fragment_subject" />
+    <fragment
+        android:id="@+id/gradeFragment"
+        android:name="com.ngangavictor.firestore.school.ui.grades.GradeFragment"
+        android:label="Grade"
+        tools:layout="@layout/grade_fragment" />
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.ngangavictor.firestore.school.ui.results.ResultFragment"
+        android:label="Result"
+        tools:layout="@layout/result_fragment" />
+    <fragment
+        android:id="@+id/studentFragment"
+        android:name="com.ngangavictor.firestore.school.ui.students.StudentFragment"
+        android:label="Student"
+        tools:layout="@layout/student_fragment" />
+    <fragment
+        android:id="@+id/teacherFragment"
+        android:name="com.ngangavictor.firestore.school.ui.teachers.TeacherFragment"
+        android:label="Teacher"
+        tools:layout="@layout/teacher_fragment" />
 </navigation>

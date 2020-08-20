@@ -5,35 +5,35 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_class"
+            android:id="@+id/classFragment"
             android:icon="@drawable/ic_menu_camera"
             android:title="Class" />
         <item
-            android:id="@+id/nav_subject"
+            android:id="@+id/subjectFragment"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Subjects" />
         <item
-            android:id="@+id/nav_exam"
+            android:id="@+id/examFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Exams" />
 
         <item
-            android:id="@+id/nav_grade"
+            android:id="@+id/gradeFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Grades" />
 
         <item
-            android:id="@+id/nav_student"
+            android:id="@+id/studentFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Students" />
 
         <item
-            android:id="@+id/nav_teacher"
+            android:id="@+id/teacherFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Teachers" />
 
         <item
-            android:id="@+id/nav_results"
+            android:id="@+id/resultFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Results" />
 
