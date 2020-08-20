@@ -3,12 +3,16 @@ package com.ngangavictor.firestore.school.ui.classes
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -19,6 +23,8 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.adapter.ClassAdapter
+import com.ngangavictor.firestore.models.ClassModel
 
 class ClassFragment : Fragment() {
 
@@ -32,7 +38,12 @@ class ClassFragment : Fragment() {
     private lateinit var database: FirebaseFirestore
 
     private lateinit var recyclerViewClasses: RecyclerView
+
     private lateinit var fabAddClass: FloatingActionButton
+
+    private lateinit var classList: MutableList<ClassModel>
+
+    private lateinit var classAdapter: ClassAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,11 +61,39 @@ class ClassFragment : Fragment() {
         recyclerViewClasses = root.findViewById(R.id.recyclerViewClasses)
         fabAddClass = root.findViewById(R.id.fabAddClass)
 
+        recyclerViewClasses.layoutManager =
+            LinearLayoutManager(requireContext())
+        recyclerViewClasses.setHasFixedSize(true)
+
+        classList=ArrayList()
+
         fabAddClass.setOnClickListener {
             addClassAlert()
         }
 
+        classViewModel.getClasses().observe(viewLifecycleOwner, Observer {
+            classList = it as MutableList<ClassModel>
+            classAdapter = ClassAdapter(
+                classList as ArrayList<ClassModel>
+            )
+
+            classAdapter.notifyDataSetChanged()
+
+            recyclerViewClasses.adapter = classAdapter
+        })
+
         return root
+    }
+
+
+    private fun getClasses(){
+        database.collection("classes").document(auth.currentUser!!.uid).
+                addSnapshotListener { value, error ->
+//                    Log.e("DATA",value!!.data!!.values.toString())
+                    for (i in value!!.data!!.values){
+                        Log.e("DATA",i.toString())
+                    }
+                }
     }
 
 
@@ -81,17 +120,19 @@ class ClassFragment : Fragment() {
     }
 
     private fun addClass(className: String) {
-
+    loadingAlert()
         val data = hashMapOf(
             className.replace(" ","") to className
         )
 
         database.collection("classes").document(auth.currentUser!!.uid)
-            .set(data,SetOptions.merge()).addOnCompleteListener {
+            .set(data, SetOptions.merge()).addOnCompleteListener {
                 alert.cancel()
                 if (it.isSuccessful) {
+                    alert.cancel()
                     Snackbar.make(requireView(), "Class added", Snackbar.LENGTH_LONG).show()
                 } else {
+                    alert.cancel()
                     Snackbar.make(
                         requireView(),
                         "Error while adding class. Try again",
@@ -99,6 +140,14 @@ class ClassFragment : Fragment() {
                     ).show()
                 }
             }
+    }
+
+    private fun loadingAlert(){
+        val loadingAlert=AlertDialog.Builder(requireContext())
+        loadingAlert.setCancelable(false)
+        loadingAlert.setMessage("Adding class ...")
+        alert=loadingAlert.create()
+        alert.show()
     }
 
 }
