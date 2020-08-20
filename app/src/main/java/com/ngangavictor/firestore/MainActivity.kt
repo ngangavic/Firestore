@@ -13,8 +13,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.login.LoginActivity
+import com.ngangavictor.firestore.register.DetailsActivity
 import com.ngangavictor.firestore.register.RegisterActivity
 import com.ngangavictor.firestore.school.SchoolActivity
+import com.ngangavictor.firestore.utils.LocalSharedPreferences
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonLogin: Button
 
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var localSharedPreferences: LocalSharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         buttonLogin = findViewById(R.id.buttonLogin)
 
         auth=Firebase.auth
+
+        localSharedPreferences= LocalSharedPreferences(this@MainActivity)
 
         buttonRegister.setOnClickListener {
            startActivity(Intent(this,RegisterActivity::class.java))
@@ -47,8 +53,13 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         if (auth.currentUser!=null){
             if (auth.currentUser!!.isEmailVerified){
-                startActivity(Intent(this@MainActivity,SchoolActivity::class.java))
-                finish()
+                if (localSharedPreferences.getSchoolDetailsPref("school_details")=="yes") {
+                    startActivity(Intent(this@MainActivity, SchoolActivity::class.java))
+                    finish()
+                }else{
+                    startActivity(Intent(this@MainActivity, DetailsActivity::class.java))
+                    finish()
+                }
             }else{
                 auth.currentUser!!.sendEmailVerification()
                 auth.signOut()

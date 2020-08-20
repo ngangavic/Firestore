@@ -16,6 +16,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.school.SchoolActivity
+import com.ngangavictor.firestore.utils.LocalSharedPreferences
 
 class DetailsActivity : AppCompatActivity() {
 
@@ -32,6 +33,8 @@ class DetailsActivity : AppCompatActivity() {
 
     private lateinit var alert: AlertDialog
 
+    private lateinit var localSharedPreferences: LocalSharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
@@ -46,6 +49,8 @@ class DetailsActivity : AppCompatActivity() {
 
         db = Firebase.firestore
         auth = Firebase.auth
+
+        localSharedPreferences= LocalSharedPreferences(this@DetailsActivity)
 
         buttonContinue.setOnClickListener {
             saveDetails()
@@ -114,10 +119,12 @@ class DetailsActivity : AppCompatActivity() {
                     .set(school, SetOptions.merge())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
+                            localSharedPreferences.saveSchoolDetailsPref("school_details","yes")
                             alert.cancel()
                             startActivity(Intent(this@DetailsActivity, SchoolActivity::class.java))
                             finish()
                         } else {
+                            localSharedPreferences.saveSchoolDetailsPref("school_details","no")
                             alert.cancel()
                             messageAlert("Error", "Message: " + it.exception!!.message.toString())
                         }

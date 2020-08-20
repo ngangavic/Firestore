@@ -21,6 +21,7 @@ import com.ngangavictor.firestore.register.DetailsActivity
 import com.ngangavictor.firestore.register.RegisterActivity
 import com.ngangavictor.firestore.reset.ResetActivity
 import com.ngangavictor.firestore.school.SchoolActivity
+import com.ngangavictor.firestore.utils.LocalSharedPreferences
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,6 +39,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseFirestore
 
+    private lateinit var localSharedPreferences: LocalSharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -51,6 +54,8 @@ class LoginActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         database = Firebase.firestore
+
+        localSharedPreferences= LocalSharedPreferences(this@LoginActivity)
 
         buttonLogin.setOnClickListener {
             login()
@@ -72,11 +77,13 @@ class LoginActivity : AppCompatActivity() {
         database.collection("schools").document(auth.currentUser!!.uid).get()
             .addOnSuccessListener {
                 if (it.data!!.size==3){
+                    localSharedPreferences.saveSchoolDetailsPref("school_details","no")
                     alert.cancel()
                     clearText()
                     startActivity(Intent(this@LoginActivity,DetailsActivity::class.java))
                     finish()
                 }else{
+                    localSharedPreferences.saveSchoolDetailsPref("school_details","yes")
                     alert.cancel()
                     clearText()
                     startActivity(Intent(this@LoginActivity,SchoolActivity::class.java))
