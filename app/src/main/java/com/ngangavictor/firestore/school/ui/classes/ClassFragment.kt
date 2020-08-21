@@ -71,7 +71,9 @@ class ClassFragment : Fragment() {
         }
 
         classViewModel.getClasses().observe(viewLifecycleOwner, Observer {
+
             classList = it as MutableList<ClassModel>
+
             classAdapter = ClassAdapter(
                 classList as ArrayList<ClassModel>
             )
@@ -83,18 +85,6 @@ class ClassFragment : Fragment() {
 
         return root
     }
-
-
-    private fun getClasses() {
-        database.collection("classes").document(auth.currentUser!!.uid)
-            .addSnapshotListener { value, error ->
-//                    Log.e("DATA",value!!.data!!.values.toString())
-                for (i in value!!.data!!.values) {
-                    Log.e("DATA", i.toString())
-                }
-            }
-    }
-
 
     private fun addClassAlert() {
         val editTextClassName = EditText(requireContext())

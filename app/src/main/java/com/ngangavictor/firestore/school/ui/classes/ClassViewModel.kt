@@ -16,11 +16,12 @@ class ClassViewModel : ViewModel() {
     private val classData = MutableLiveData<List<ClassModel>>()
 
     fun getClasses(): LiveData<List<ClassModel>> {
+
         classList.clear()
+
         firestoreRepository.getClasses().addSnapshotListener { value, error ->
 
             for (i in value!!.data!!.values) {
-                Log.e("DATA", i.toString())
                 classList.add(ClassModel(i.toString().take(1), i.toString()))
             }
 
