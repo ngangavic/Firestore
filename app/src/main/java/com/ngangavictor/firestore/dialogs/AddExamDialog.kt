@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.DialogFragment
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,7 +16,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.listeners.ListenerAddExam
-import com.ngangavictor.firestore.models.ClassModel
 
 class AddExamDialog(val listenerAddExam: ListenerAddExam) : DialogFragment() {
 
@@ -36,9 +34,9 @@ class AddExamDialog(val listenerAddExam: ListenerAddExam) : DialogFragment() {
     private lateinit var database: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
-    private lateinit var classList:List<String>
+    private lateinit var classList: List<String>
 
-    private lateinit var spinnerAdapter:ArrayAdapter<String>
+    private lateinit var spinnerAdapter: ArrayAdapter<String>
 
     private lateinit var alert: AlertDialog
 
@@ -62,11 +60,12 @@ class AddExamDialog(val listenerAddExam: ListenerAddExam) : DialogFragment() {
         database = Firebase.firestore
         auth = Firebase.auth
 
-        classList=ArrayList()
+        classList = ArrayList()
 
-        spinnerAdapter= ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,classList)
+        spinnerAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, classList)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerClass.adapter=spinnerAdapter
+        spinnerClass.adapter = spinnerAdapter
 
         textViewAdd.setOnClickListener {
             saveExam()
@@ -123,19 +122,19 @@ class AddExamDialog(val listenerAddExam: ListenerAddExam) : DialogFragment() {
                     } else {
                         alert.cancel()
                         dialog!!.dismiss()
-                       listenerAddExam.message("failed")
+                        listenerAddExam.message("failed")
                     }
                 }
         }
     }
 
-    private fun loadingAlert(){
-        val progressBar=ProgressBar(requireContext())
+    private fun loadingAlert() {
+        val progressBar = ProgressBar(requireContext())
 
-        val loadAlert=AlertDialog.Builder(requireContext())
+        val loadAlert = AlertDialog.Builder(requireContext())
         loadAlert.setCancelable(false)
         loadAlert.setView(progressBar)
-        alert=loadAlert.create()
+        alert = loadAlert.create()
         alert.show()
     }
 

@@ -17,7 +17,7 @@ class FirestoreRepository {
         return database.collection("classes").document(auth.currentUser!!.uid)
     }
 
-    fun getExams():CollectionReference{
+    fun getExams(): CollectionReference {
         return database.collection("schools").document(auth.currentUser!!.uid).collection("exams")
     }
 
