@@ -17,6 +17,8 @@ class ExamViewModel : ViewModel() {
 
         firestoreRepository.getExams().addSnapshotListener { value, error ->
 
+            examList.clear()
+
             for (i in value!!) {
                 examList.add(
                     ExamModel(

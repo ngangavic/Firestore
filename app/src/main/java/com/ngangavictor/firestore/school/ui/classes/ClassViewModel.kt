@@ -16,10 +16,10 @@ class ClassViewModel : ViewModel() {
 
     fun getClasses(): LiveData<List<ClassModel>> {
 
-        classList.clear()
+
 
         firestoreRepository.getClasses().addSnapshotListener { value, error ->
-
+            classList.clear()
             for (i in value!!.data!!.values) {
                 classList.add(ClassModel(i.toString().take(1), i.toString()))
             }
