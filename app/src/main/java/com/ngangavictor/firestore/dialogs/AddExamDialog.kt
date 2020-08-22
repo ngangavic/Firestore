@@ -16,9 +16,10 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.listeners.ListenerAddExam
 import com.ngangavictor.firestore.models.ClassModel
 
-class AddExamDialog : DialogFragment() {
+class AddExamDialog(val listenerAddExam: ListenerAddExam) : DialogFragment() {
 
 
     private lateinit var root: View
@@ -118,15 +119,11 @@ class AddExamDialog : DialogFragment() {
                     if (it.isSuccessful) {
                         alert.cancel()
                         dialog!!.dismiss()
-                        Snackbar.make(requireView(), "Exam added", Snackbar.LENGTH_LONG).show()
+                        listenerAddExam.message("success")
                     } else {
                         alert.cancel()
                         dialog!!.dismiss()
-                        Snackbar.make(
-                            requireView(),
-                            "Exam not added. Try again.",
-                            Snackbar.LENGTH_LONG
-                        ).show()
+                       listenerAddExam.message("failed")
                     }
                 }
         }
@@ -135,15 +132,15 @@ class AddExamDialog : DialogFragment() {
     private fun loadingAlert(){
         val progressBar=ProgressBar(requireContext())
 
-        val loadALert=AlertDialog.Builder(requireContext())
-        loadALert.setCancelable(false)
-        loadALert.setView(progressBar)
-        alert=loadALert.create()
+        val loadAlert=AlertDialog.Builder(requireContext())
+        loadAlert.setCancelable(false)
+        loadAlert.setView(progressBar)
+        alert=loadAlert.create()
         alert.show()
     }
 
     fun newInstance(): AddExamDialog {
-        return AddExamDialog()
+        return AddExamDialog(listenerAddExam)
     }
 
 }

@@ -9,11 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.dialogs.AddExamDialog
+import com.ngangavictor.firestore.listeners.ListenerAddExam
 
-class ExamFragment : Fragment() {
+class ExamFragment : Fragment(),ListenerAddExam {
 
     private lateinit var examViewModel: ExamViewModel
 
@@ -42,7 +45,7 @@ class ExamFragment : Fragment() {
         fabExam=root.findViewById(R.id.fabExam)
 
         fabExam.setOnClickListener {
-            val addExamDialog = AddExamDialog().newInstance()
+            val addExamDialog = AddExamDialog(this).newInstance()
             addExamDialog.isCancelable = false
             requireActivity().supportFragmentManager.let {
                 addExamDialog.show(
@@ -53,5 +56,13 @@ class ExamFragment : Fragment() {
         }
 
         return root
+    }
+
+    override fun message(message: String) {
+        if (message=="success"){
+            Snackbar.make(requireView(),"Exam created.",Snackbar.LENGTH_LONG).show()
+        }else{
+            Snackbar.make(requireView(),"Error while creating. Try again",Snackbar.LENGTH_LONG).show()
+        }
     }
 }
