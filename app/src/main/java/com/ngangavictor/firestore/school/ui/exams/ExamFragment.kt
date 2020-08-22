@@ -8,11 +8,20 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.dialogs.AddExamDialog
 
 class ExamFragment : Fragment() {
 
     private lateinit var examViewModel: ExamViewModel
+
+    private lateinit var root:View
+
+    private lateinit var recyclerViewExams:RecyclerView
+
+    private lateinit var fabExam:FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,11 +30,28 @@ class ExamFragment : Fragment() {
     ): View? {
         examViewModel =
             ViewModelProviders.of(this).get(ExamViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_exam, container, false)
-        val textView: TextView = root.findViewById(R.id.text_slideshow)
+
+        root = inflater.inflate(R.layout.fragment_exam, container, false)
+
         examViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+
         })
+
+        recyclerViewExams=root.findViewById(R.id.recyclerViewExams)
+
+        fabExam=root.findViewById(R.id.fabExam)
+
+        fabExam.setOnClickListener {
+            val addExamDialog = AddExamDialog().newInstance()
+            addExamDialog.isCancelable = false
+            requireActivity().supportFragmentManager.let {
+                addExamDialog.show(
+                    it,
+                    "dialog add exam"
+                )
+            }
+        }
+
         return root
     }
 }
