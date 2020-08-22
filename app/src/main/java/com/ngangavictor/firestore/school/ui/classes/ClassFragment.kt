@@ -16,15 +16,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.adapter.ClassAdapter
+import com.ngangavictor.firestore.listeners.ListenerDeleteClass
 import com.ngangavictor.firestore.models.ClassModel
 
-class ClassFragment : Fragment() {
+class ClassFragment : Fragment(), ListenerDeleteClass {
 
     private lateinit var classViewModel: ClassViewModel
 
@@ -74,7 +76,7 @@ class ClassFragment : Fragment() {
             classList = it as MutableList<ClassModel>
 
             classAdapter = ClassAdapter(
-                classList as ArrayList<ClassModel>
+                requireContext(),classList as ArrayList<ClassModel>,this
             )
 
             classAdapter.notifyDataSetChanged()
@@ -136,6 +138,23 @@ class ClassFragment : Fragment() {
         loadingAlert.setMessage("Adding class ...")
         alert = loadingAlert.create()
         alert.show()
+    }
+
+    override fun className(name: String) {
+
+        val updates = hashMapOf<String, Any>(
+            name.replace(" ","") to FieldValue.delete()
+        )
+
+      database.collection("classes").document(auth.currentUser!!.uid)
+          .update(updates).addOnCompleteListener {
+              if (it.isSuccessful){
+                  Snackbar.make(requireView(),"Class deleted",Snackbar.LENGTH_LONG).show()
+              }else{
+                  Snackbar.make(requireView(),"Error deleting class",Snackbar.LENGTH_LONG).show()
+              }
+          }
+
     }
 
 }
