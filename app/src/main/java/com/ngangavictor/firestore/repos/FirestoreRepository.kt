@@ -2,6 +2,7 @@ package com.ngangavictor.firestore.repos
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -14,6 +15,10 @@ class FirestoreRepository {
 
     fun getClasses(): DocumentReference {
         return database.collection("classes").document(auth.currentUser!!.uid)
+    }
+
+    fun getExams():CollectionReference{
+        return database.collection("schools").document(auth.currentUser!!.uid).collection("exams")
     }
 
 
