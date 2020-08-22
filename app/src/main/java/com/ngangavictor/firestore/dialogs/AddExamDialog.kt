@@ -5,9 +5,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +15,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.models.ClassModel
 
 class AddExamDialog : DialogFragment() {
 
@@ -34,6 +33,10 @@ class AddExamDialog : DialogFragment() {
 
     private lateinit var database: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var classList:List<String>
+
+    private lateinit var spinnerAdapter:ArrayAdapter<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +58,12 @@ class AddExamDialog : DialogFragment() {
         database = Firebase.firestore
         auth = Firebase.auth
 
+        classList=ArrayList()
+
+        spinnerAdapter= ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,classList)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerClass.adapter=spinnerAdapter
+
         textViewAdd.setOnClickListener {
             saveExam()
         }
@@ -62,6 +71,15 @@ class AddExamDialog : DialogFragment() {
         textViewCancel.setOnClickListener {
             dialog!!.dismiss()
         }
+
+        database.collection("classes").document(auth.currentUser!!.uid)
+            .addSnapshotListener { value, error ->
+                for (i in value!!.data!!.values) {
+                    (classList as ArrayList<String>).add(i.toString())
+                }
+
+                spinnerAdapter.notifyDataSetChanged()
+            }
 
         return root
     }
