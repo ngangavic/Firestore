@@ -1,5 +1,6 @@
 package com.ngangavictor.firestore.dialogs
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -37,6 +38,8 @@ class AddExamDialog : DialogFragment() {
     private lateinit var classList:List<String>
 
     private lateinit var spinnerAdapter:ArrayAdapter<String>
+
+    private lateinit var alert: AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -102,6 +105,7 @@ class AddExamDialog : DialogFragment() {
         } else if (selectedClass == "") {
             spinnerClass.performClick()
         } else {
+            loadingAlert()
             val exam = hashMapOf(
                 "examName" to examName,
                 "examTerm" to examTerm,
@@ -112,9 +116,11 @@ class AddExamDialog : DialogFragment() {
                 .document().set(exam, SetOptions.merge())
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
+                        alert.cancel()
                         dialog!!.dismiss()
                         Snackbar.make(requireView(), "Exam added", Snackbar.LENGTH_LONG).show()
                     } else {
+                        alert.cancel()
                         dialog!!.dismiss()
                         Snackbar.make(
                             requireView(),
@@ -124,6 +130,16 @@ class AddExamDialog : DialogFragment() {
                     }
                 }
         }
+    }
+
+    private fun loadingAlert(){
+        val progressBar=ProgressBar(requireContext())
+
+        val loadALert=AlertDialog.Builder(requireContext())
+        loadALert.setCancelable(false)
+        loadALert.setView(progressBar)
+        alert=loadALert.create()
+        alert.show()
     }
 
     fun newInstance(): AddExamDialog {
