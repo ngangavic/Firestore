@@ -41,6 +41,12 @@ class ClassAdapter(
                         R.id.action_edit_class -> {
                             return true
                         }
+                        R.id.action_enter_class_results->{
+
+                        }
+                        R.id.action_view_class_results->{
+
+                        }
                     }
                     return false
                 }
