@@ -55,7 +55,7 @@ class ExamFragment : Fragment(), ListenerAddExam {
             examList = it as MutableList<ExamModel>
 
             examAdapter = ExamAdapter(
-                examList as ArrayList<ExamModel>
+                  requireContext(),examList as ArrayList<ExamModel>
             )
 
             examAdapter.notifyDataSetChanged()
