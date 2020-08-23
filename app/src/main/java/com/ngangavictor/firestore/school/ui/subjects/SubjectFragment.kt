@@ -11,9 +11,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.dialogs.AddExamDialog
+import com.ngangavictor.firestore.dialogs.AddSubjectDialog
+import com.ngangavictor.firestore.listeners.ListenerSubject
 
-class SubjectFragment : Fragment() {
+class SubjectFragment : Fragment(),ListenerSubject {
 
     private lateinit var subjectViewModel: SubjectViewModel
 
@@ -42,9 +46,30 @@ class SubjectFragment : Fragment() {
             LinearLayoutManager(requireContext())
         recyclerViewSubjects.setHasFixedSize(true)
 
+        fabAddSubject.setOnClickListener {
+            val addSubjectDialog = AddSubjectDialog(this).newInstance()
+            addSubjectDialog.isCancelable = false
+            requireActivity().supportFragmentManager.let {
+                addSubjectDialog.show(
+                    it,
+                    "dialog add subject"
+                )
+            }
+        }
+
         subjectViewModel.text.observe(viewLifecycleOwner, Observer {
 
         })
         return root
+    }
+
+    override fun addSubjectResponse(message: String) {
+
+        if (message=="success"){
+            Snackbar.make(requireView(),"Subject Added",Snackbar.LENGTH_LONG).show()
+        }else{
+            Snackbar.make(requireView(),"Error: Subject not added. Try again",Snackbar.LENGTH_LONG).show()
+        }
+
     }
 }
