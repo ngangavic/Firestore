@@ -76,7 +76,7 @@ class ClassFragment : Fragment(), ListenerDeleteClass {
             classList = it as MutableList<ClassModel>
 
             classAdapter = ClassAdapter(
-                requireContext(),classList as ArrayList<ClassModel>,this
+                requireContext(), classList as ArrayList<ClassModel>, this
             )
 
             classAdapter.notifyDataSetChanged()
@@ -143,17 +143,18 @@ class ClassFragment : Fragment(), ListenerDeleteClass {
     override fun className(name: String) {
 
         val updates = hashMapOf<String, Any>(
-            name.replace(" ","") to FieldValue.delete()
+            name.replace(" ", "") to FieldValue.delete()
         )
 
-      database.collection("classes").document(auth.currentUser!!.uid)
-          .update(updates).addOnCompleteListener {
-              if (it.isSuccessful){
-                  Snackbar.make(requireView(),"Class deleted",Snackbar.LENGTH_LONG).show()
-              }else{
-                  Snackbar.make(requireView(),"Error deleting class",Snackbar.LENGTH_LONG).show()
-              }
-          }
+        database.collection("classes").document(auth.currentUser!!.uid)
+            .update(updates).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Snackbar.make(requireView(), "Class deleted", Snackbar.LENGTH_LONG).show()
+                } else {
+                    Snackbar.make(requireView(), "Error deleting class", Snackbar.LENGTH_LONG)
+                        .show()
+                }
+            }
 
     }
 

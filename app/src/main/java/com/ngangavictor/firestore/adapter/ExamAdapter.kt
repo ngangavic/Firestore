@@ -11,7 +11,11 @@ import com.ngangavictor.firestore.holder.ExamHolder
 import com.ngangavictor.firestore.listeners.ListenerDeleteExam
 import com.ngangavictor.firestore.models.ExamModel
 
-class ExamAdapter(private val context: Context,private val exams: ArrayList<ExamModel>,private val listenerDeleteExam: ListenerDeleteExam) :
+class ExamAdapter(
+    private val context: Context,
+    private val exams: ArrayList<ExamModel>,
+    private val listenerDeleteExam: ListenerDeleteExam
+) :
     RecyclerView.Adapter<ExamHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamHolder {
@@ -39,12 +43,12 @@ class ExamAdapter(private val context: Context,private val exams: ArrayList<Exam
                         R.id.action_view_exam_results -> {
                             return true
                         }
-                        R.id.action_enter_exam_results->{
-return true
+                        R.id.action_enter_exam_results -> {
+                            return true
                         }
-                        R.id.action_delete_exam->{
+                        R.id.action_delete_exam -> {
                             listenerDeleteExam.deleteExam(exams[position].key)
-return true
+                            return true
                         }
                     }
                     return false

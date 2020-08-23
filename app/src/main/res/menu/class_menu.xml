@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Edit"
-        android:id="@+id/action_edit_class"/>
-    <item android:title="Enter Results"
-        android:id="@+id/action_enter_class_results"/>
-    <item android:title="View Results"
-        android:id="@+id/action_view_class_results"/>
-    <item android:title="Delete"
-        android:id="@+id/action_delete_class"/>
+    <item
+        android:id="@+id/action_edit_class"
+        android:title="Edit" />
+    <item
+        android:id="@+id/action_enter_class_results"
+        android:title="Enter Results" />
+    <item
+        android:id="@+id/action_view_class_results"
+        android:title="View Results" />
+    <item
+        android:id="@+id/action_delete_class"
+        android:title="Delete" />
 </menu>

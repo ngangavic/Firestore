@@ -23,7 +23,7 @@ import com.ngangavictor.firestore.listeners.ListenerAddExam
 import com.ngangavictor.firestore.listeners.ListenerDeleteExam
 import com.ngangavictor.firestore.models.ExamModel
 
-class ExamFragment : Fragment(), ListenerAddExam,ListenerDeleteExam {
+class ExamFragment : Fragment(), ListenerAddExam, ListenerDeleteExam {
 
     private lateinit var examViewModel: ExamViewModel
 
@@ -37,7 +37,7 @@ class ExamFragment : Fragment(), ListenerAddExam,ListenerDeleteExam {
 
     private lateinit var examAdapter: ExamAdapter
 
-    private lateinit var database:FirebaseFirestore
+    private lateinit var database: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
@@ -64,7 +64,7 @@ class ExamFragment : Fragment(), ListenerAddExam,ListenerDeleteExam {
             examList = it as MutableList<ExamModel>
 
             examAdapter = ExamAdapter(
-                  requireContext(),examList as ArrayList<ExamModel>,this
+                requireContext(), examList as ArrayList<ExamModel>, this
             )
 
             examAdapter.notifyDataSetChanged()
@@ -84,8 +84,8 @@ class ExamFragment : Fragment(), ListenerAddExam,ListenerDeleteExam {
             }
         }
 
-        database=Firebase.firestore
-        auth=Firebase.auth
+        database = Firebase.firestore
+        auth = Firebase.auth
 
         return root
     }
@@ -101,13 +101,14 @@ class ExamFragment : Fragment(), ListenerAddExam,ListenerDeleteExam {
 
     override fun deleteExam(key: String) {
 
-        database.collection("schools").document(auth.currentUser!!.uid).collection("exams").document(key)
+        database.collection("schools").document(auth.currentUser!!.uid).collection("exams")
+            .document(key)
             .delete()
             .addOnSuccessListener {
-                Snackbar.make(requireView(),"Exam deleted",Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), "Exam deleted", Snackbar.LENGTH_LONG).show()
             }
             .addOnFailureListener {
-                Snackbar.make(requireView(),"Error deleting exam",Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), "Error deleting exam", Snackbar.LENGTH_LONG).show()
             }
 
     }

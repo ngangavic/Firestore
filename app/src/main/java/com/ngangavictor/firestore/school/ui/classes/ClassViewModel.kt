@@ -17,7 +17,6 @@ class ClassViewModel : ViewModel() {
     fun getClasses(): LiveData<List<ClassModel>> {
 
 
-
         firestoreRepository.getClasses().addSnapshotListener { value, error ->
             classList.clear()
             for (i in value!!.data!!.values) {

@@ -11,7 +11,11 @@ import com.ngangavictor.firestore.holder.SubjectHolder
 import com.ngangavictor.firestore.listeners.ListenerSubject
 import com.ngangavictor.firestore.models.SubjectModel
 
-class SubjectAdapter(private val context: Context, private val subjects: ArrayList<SubjectModel>,val listenerSubject: ListenerSubject) :
+class SubjectAdapter(
+    private val context: Context,
+    private val subjects: ArrayList<SubjectModel>,
+    val listenerSubject: ListenerSubject
+) :
     RecyclerView.Adapter<SubjectHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectHolder {

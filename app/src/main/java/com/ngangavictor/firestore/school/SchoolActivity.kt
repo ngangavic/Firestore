@@ -49,9 +49,9 @@ class SchoolActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        auth=Firebase.auth
+        auth = Firebase.auth
 
-        localSharedPreferences= LocalSharedPreferences(this@SchoolActivity)
+        localSharedPreferences = LocalSharedPreferences(this@SchoolActivity)
 
     }
 
@@ -62,11 +62,11 @@ class SchoolActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.action_logout->{
+        when (item.itemId) {
+            R.id.action_logout -> {
                 auth.signOut()
                 localSharedPreferences.clearSchoolDetailsPref()
-                startActivity(Intent(this@SchoolActivity,LoginActivity::class.java))
+                startActivity(Intent(this@SchoolActivity, LoginActivity::class.java))
                 finish()
             }
         }

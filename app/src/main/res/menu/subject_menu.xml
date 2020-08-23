@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Edit"
-        android:id="@+id/action_edit_subject"/>
-    <item android:title="Assign Classes"
-        android:id="@+id/action_assign_class_subject"/>
-    <item android:title="Delete"
-        android:id="@+id/action_delete_subject"/>
+    <item
+        android:id="@+id/action_edit_subject"
+        android:title="Edit" />
+    <item
+        android:id="@+id/action_assign_class_subject"
+        android:title="Assign Classes" />
+    <item
+        android:id="@+id/action_delete_subject"
+        android:title="Delete" />
 
 </menu>

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,29 +17,26 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
-import com.ngangavictor.firestore.adapter.ExamAdapter
 import com.ngangavictor.firestore.adapter.SubjectAdapter
-import com.ngangavictor.firestore.dialogs.AddExamDialog
 import com.ngangavictor.firestore.dialogs.AddSubjectDialog
 import com.ngangavictor.firestore.listeners.ListenerSubject
-import com.ngangavictor.firestore.models.ExamModel
 import com.ngangavictor.firestore.models.SubjectModel
 
-class SubjectFragment : Fragment(),ListenerSubject {
+class SubjectFragment : Fragment(), ListenerSubject {
 
     private lateinit var subjectViewModel: SubjectViewModel
 
-    private lateinit var root:View
+    private lateinit var root: View
 
-    private lateinit var recyclerViewSubjects:RecyclerView
+    private lateinit var recyclerViewSubjects: RecyclerView
 
-    private lateinit var fabAddSubject:FloatingActionButton
+    private lateinit var fabAddSubject: FloatingActionButton
 
     private lateinit var subjectList: MutableList<SubjectModel>
 
     private lateinit var subjectAdapter: SubjectAdapter
 
-    private lateinit var database:FirebaseFirestore
+    private lateinit var database: FirebaseFirestore
 
     private lateinit var auth: FirebaseAuth
 
@@ -56,18 +52,18 @@ class SubjectFragment : Fragment(),ListenerSubject {
 
         root = inflater.inflate(R.layout.fragment_subject, container, false)
 
-        recyclerViewSubjects=root.findViewById(R.id.recyclerViewSubjects)
+        recyclerViewSubjects = root.findViewById(R.id.recyclerViewSubjects)
 
-        fabAddSubject=root.findViewById(R.id.fabAddSubject)
+        fabAddSubject = root.findViewById(R.id.fabAddSubject)
 
         recyclerViewSubjects.layoutManager =
             LinearLayoutManager(requireContext())
         recyclerViewSubjects.setHasFixedSize(true)
 
-        subjectList=ArrayList()
+        subjectList = ArrayList()
 
-        database=Firebase.firestore
-        auth=Firebase.auth
+        database = Firebase.firestore
+        auth = Firebase.auth
 
         fabAddSubject.setOnClickListener {
             val addSubjectDialog = AddSubjectDialog(this).newInstance()
@@ -85,7 +81,7 @@ class SubjectFragment : Fragment(),ListenerSubject {
             subjectList = it as MutableList<SubjectModel>
 
             subjectAdapter = SubjectAdapter(
-                requireContext(),subjectList as ArrayList<SubjectModel>,this
+                requireContext(), subjectList as ArrayList<SubjectModel>, this
             )
 
             subjectAdapter.notifyDataSetChanged()
@@ -98,22 +94,27 @@ class SubjectFragment : Fragment(),ListenerSubject {
 
     override fun addSubjectResponse(message: String) {
 
-        if (message=="success"){
-            Snackbar.make(requireView(),"Subject Added",Snackbar.LENGTH_LONG).show()
-        }else{
-            Snackbar.make(requireView(),"Error: Subject not added. Try again",Snackbar.LENGTH_LONG).show()
+        if (message == "success") {
+            Snackbar.make(requireView(), "Subject Added", Snackbar.LENGTH_LONG).show()
+        } else {
+            Snackbar.make(
+                requireView(),
+                "Error: Subject not added. Try again",
+                Snackbar.LENGTH_LONG
+            ).show()
         }
 
     }
 
     override fun deleteSubject(key: String) {
-        database.collection("schools").document(auth.currentUser!!.uid).collection("subjects").document(key)
+        database.collection("schools").document(auth.currentUser!!.uid).collection("subjects")
+            .document(key)
             .delete()
             .addOnSuccessListener {
-                Snackbar.make(requireView(),"Subject deleted",Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), "Subject deleted", Snackbar.LENGTH_LONG).show()
             }
             .addOnFailureListener {
-                Snackbar.make(requireView(),"Error deleting subject",Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), "Error deleting subject", Snackbar.LENGTH_LONG).show()
             }
     }
 
