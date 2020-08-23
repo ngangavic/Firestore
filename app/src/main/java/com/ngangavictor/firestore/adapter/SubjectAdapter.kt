@@ -8,9 +8,10 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.holder.SubjectHolder
+import com.ngangavictor.firestore.listeners.ListenerSubject
 import com.ngangavictor.firestore.models.SubjectModel
 
-class SubjectAdapter(private val context: Context, private val subjects: ArrayList<SubjectModel>) :
+class SubjectAdapter(private val context: Context, private val subjects: ArrayList<SubjectModel>,val listenerSubject: ListenerSubject) :
     RecyclerView.Adapter<SubjectHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectHolder {
@@ -36,6 +37,7 @@ class SubjectAdapter(private val context: Context, private val subjects: ArrayLi
                             return true
                         }
                         R.id.action_delete_subject -> {
+                            listenerSubject.deleteSubject(subjects[position].key)
                             return true
                         }
                     }

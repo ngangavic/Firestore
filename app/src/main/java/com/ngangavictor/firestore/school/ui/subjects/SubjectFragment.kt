@@ -12,6 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.adapter.ExamAdapter
 import com.ngangavictor.firestore.adapter.SubjectAdapter
@@ -35,12 +40,17 @@ class SubjectFragment : Fragment(),ListenerSubject {
 
     private lateinit var subjectAdapter: SubjectAdapter
 
+    private lateinit var database:FirebaseFirestore
+
+    private lateinit var auth: FirebaseAuth
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         subjectViewModel =
             ViewModelProviders.of(this).get(SubjectViewModel::class.java)
 
@@ -55,6 +65,9 @@ class SubjectFragment : Fragment(),ListenerSubject {
         recyclerViewSubjects.setHasFixedSize(true)
 
         subjectList=ArrayList()
+
+        database=Firebase.firestore
+        auth=Firebase.auth
 
         fabAddSubject.setOnClickListener {
             val addSubjectDialog = AddSubjectDialog(this).newInstance()
@@ -72,7 +85,7 @@ class SubjectFragment : Fragment(),ListenerSubject {
             subjectList = it as MutableList<SubjectModel>
 
             subjectAdapter = SubjectAdapter(
-                requireContext(),subjectList as ArrayList<SubjectModel>
+                requireContext(),subjectList as ArrayList<SubjectModel>,this
             )
 
             subjectAdapter.notifyDataSetChanged()
@@ -92,4 +105,16 @@ class SubjectFragment : Fragment(),ListenerSubject {
         }
 
     }
+
+    override fun deleteSubject(key: String) {
+        database.collection("schools").document(auth.currentUser!!.uid).collection("subjects").document(key)
+            .delete()
+            .addOnSuccessListener {
+                Snackbar.make(requireView(),"Subject deleted",Snackbar.LENGTH_LONG).show()
+            }
+            .addOnFailureListener {
+                Snackbar.make(requireView(),"Error deleting subject",Snackbar.LENGTH_LONG).show()
+            }
+    }
+
 }
