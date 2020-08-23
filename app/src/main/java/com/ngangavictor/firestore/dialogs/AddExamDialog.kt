@@ -15,9 +15,9 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
-import com.ngangavictor.firestore.listeners.ListenerExam
+import com.ngangavictor.firestore.listeners.ListenerAddExam
 
-class AddExamDialog(val listenerExam: ListenerExam) : DialogFragment() {
+class AddExamDialog(val listenerAddExam: ListenerAddExam) : DialogFragment() {
 
 
     private lateinit var root: View
@@ -118,11 +118,11 @@ class AddExamDialog(val listenerExam: ListenerExam) : DialogFragment() {
                     if (it.isSuccessful) {
                         alert.cancel()
                         dialog!!.dismiss()
-                        listenerExam.message("success")
+                        listenerAddExam.message("success")
                     } else {
                         alert.cancel()
                         dialog!!.dismiss()
-                        listenerExam.message("failed")
+                        listenerAddExam.message("failed")
                     }
                 }
         }
@@ -139,7 +139,7 @@ class AddExamDialog(val listenerExam: ListenerExam) : DialogFragment() {
     }
 
     fun newInstance(): AddExamDialog {
-        return AddExamDialog(listenerExam)
+        return AddExamDialog(listenerAddExam)
     }
 
 }
