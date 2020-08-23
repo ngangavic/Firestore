@@ -8,9 +8,10 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.holder.ExamHolder
+import com.ngangavictor.firestore.listeners.ListenerDeleteExam
 import com.ngangavictor.firestore.models.ExamModel
 
-class ExamAdapter(private val context: Context,private val exams: ArrayList<ExamModel>) :
+class ExamAdapter(private val context: Context,private val exams: ArrayList<ExamModel>,private val listenerDeleteExam: ListenerDeleteExam) :
     RecyclerView.Adapter<ExamHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamHolder {
@@ -33,17 +34,17 @@ class ExamAdapter(private val context: Context,private val exams: ArrayList<Exam
                 override fun onMenuItemClick(item: MenuItem?): Boolean {
                     when (item!!.itemId) {
                         R.id.action_edit_exam -> {
-//                            listenerDeleteClass.className(classes[position].className)
                             return true
                         }
                         R.id.action_view_exam_results -> {
                             return true
                         }
                         R.id.action_enter_exam_results->{
-
+return true
                         }
                         R.id.action_delete_exam->{
-
+                            listenerDeleteExam.deleteExam(exams[position].key)
+return true
                         }
                     }
                     return false

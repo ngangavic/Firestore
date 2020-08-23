@@ -11,13 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.adapter.ExamAdapter
 import com.ngangavictor.firestore.dialogs.AddExamDialog
 import com.ngangavictor.firestore.listeners.ListenerAddExam
+import com.ngangavictor.firestore.listeners.ListenerDeleteExam
 import com.ngangavictor.firestore.models.ExamModel
 
-class ExamFragment : Fragment(), ListenerAddExam {
+class ExamFragment : Fragment(), ListenerAddExam,ListenerDeleteExam {
 
     private lateinit var examViewModel: ExamViewModel
 
@@ -30,6 +36,9 @@ class ExamFragment : Fragment(), ListenerAddExam {
     private lateinit var examList: MutableList<ExamModel>
 
     private lateinit var examAdapter: ExamAdapter
+
+    private lateinit var database:FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +64,7 @@ class ExamFragment : Fragment(), ListenerAddExam {
             examList = it as MutableList<ExamModel>
 
             examAdapter = ExamAdapter(
-                  requireContext(),examList as ArrayList<ExamModel>
+                  requireContext(),examList as ArrayList<ExamModel>,this
             )
 
             examAdapter.notifyDataSetChanged()
@@ -75,6 +84,9 @@ class ExamFragment : Fragment(), ListenerAddExam {
             }
         }
 
+        database=Firebase.firestore
+        auth=Firebase.auth
+
         return root
     }
 
@@ -85,5 +97,18 @@ class ExamFragment : Fragment(), ListenerAddExam {
             Snackbar.make(requireView(), "Error while creating. Try again", Snackbar.LENGTH_LONG)
                 .show()
         }
+    }
+
+    override fun deleteExam(key: String) {
+
+        database.collection("schools").document(auth.currentUser!!.uid).collection("exams").document(key)
+            .delete()
+            .addOnSuccessListener {
+                Snackbar.make(requireView(),"Exam deleted",Snackbar.LENGTH_LONG).show()
+            }
+            .addOnFailureListener {
+                Snackbar.make(requireView(),"Error deleting exam",Snackbar.LENGTH_LONG).show()
+            }
+
     }
 }
