@@ -14,10 +14,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.adapter.ExamAdapter
 import com.ngangavictor.firestore.dialogs.AddExamDialog
-import com.ngangavictor.firestore.listeners.ListenerAddExam
+import com.ngangavictor.firestore.listeners.ListenerExam
 import com.ngangavictor.firestore.models.ExamModel
 
-class ExamFragment : Fragment(), ListenerAddExam {
+class ExamFragment : Fragment(), ListenerExam {
 
     private lateinit var examViewModel: ExamViewModel
 

@@ -1,5 +1,5 @@
 package com.ngangavictor.firestore.listeners
 
-interface ListenerAddExam {
+interface ListenerExam {
     fun message(message: String)
 }
