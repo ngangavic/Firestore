@@ -13,9 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.adapter.ExamAdapter
+import com.ngangavictor.firestore.adapter.SubjectAdapter
 import com.ngangavictor.firestore.dialogs.AddExamDialog
 import com.ngangavictor.firestore.dialogs.AddSubjectDialog
 import com.ngangavictor.firestore.listeners.ListenerSubject
+import com.ngangavictor.firestore.models.ExamModel
+import com.ngangavictor.firestore.models.SubjectModel
 
 class SubjectFragment : Fragment(),ListenerSubject {
 
@@ -26,6 +30,10 @@ class SubjectFragment : Fragment(),ListenerSubject {
     private lateinit var recyclerViewSubjects:RecyclerView
 
     private lateinit var fabAddSubject:FloatingActionButton
+
+    private lateinit var subjectList: MutableList<SubjectModel>
+
+    private lateinit var subjectAdapter: SubjectAdapter
 
 
     override fun onCreateView(
@@ -46,6 +54,8 @@ class SubjectFragment : Fragment(),ListenerSubject {
             LinearLayoutManager(requireContext())
         recyclerViewSubjects.setHasFixedSize(true)
 
+        subjectList=ArrayList()
+
         fabAddSubject.setOnClickListener {
             val addSubjectDialog = AddSubjectDialog(this).newInstance()
             addSubjectDialog.isCancelable = false
@@ -57,7 +67,17 @@ class SubjectFragment : Fragment(),ListenerSubject {
             }
         }
 
-        subjectViewModel.text.observe(viewLifecycleOwner, Observer {
+        subjectViewModel.getSubjectData().observe(viewLifecycleOwner, Observer {
+
+            subjectList = it as MutableList<SubjectModel>
+
+            subjectAdapter = SubjectAdapter(
+                requireContext(),subjectList as ArrayList<SubjectModel>
+            )
+
+            subjectAdapter.notifyDataSetChanged()
+
+            recyclerViewSubjects.adapter = subjectAdapter
 
         })
         return root

@@ -21,5 +21,9 @@ class FirestoreRepository {
         return database.collection("schools").document(auth.currentUser!!.uid).collection("exams")
     }
 
+    fun getSubject():CollectionReference{
+        return database.collection("schools").document(auth.currentUser!!.uid).collection("subjects")
+    }
+
 
 }
