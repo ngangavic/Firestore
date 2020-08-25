@@ -1,6 +1,8 @@
 package com.ngangavictor.firestore.dialogs
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.ngangavictor.firestore.R
-import kotlinx.android.synthetic.main.student_fragment.view.*
 
 class AddStudentDialog:DialogFragment() {
 
@@ -38,7 +40,29 @@ class AddStudentDialog:DialogFragment() {
         buttonUpload=root.findViewById(R.id.buttonUpload)
         buttonSelectFile=root.findViewById(R.id.buttonSelectFile)
 
+        buttonUpload.visibility=View.GONE
+
+        buttonSelectFile.setOnClickListener {
+            val i = Intent(Intent.ACTION_GET_CONTENT)
+            i.setType("*/*")
+            startActivityForResult(Intent.createChooser(i, "Select File"), 200)
+        }
+
         return root
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (requestCode == 200 && resultCode == AppCompatActivity.RESULT_OK) {
+            buttonUpload.visibility=View.VISIBLE
+            textViewMessage.text="File selected"
+
+            val uri = data?.data
+//            input = uri?.let { contentResolver.openInputStream(it) }!!
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun loadingAlert() {
