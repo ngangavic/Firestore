@@ -1,10 +1,12 @@
 package com.ngangavictor.firestore.dialogs
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.ngangavictor.firestore.R
@@ -19,6 +21,8 @@ class AddStudentDialog:DialogFragment() {
 
     private lateinit var buttonUpload:Button
     private lateinit var buttonSelectFile:Button
+
+    lateinit var alert:AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,5 +39,19 @@ class AddStudentDialog:DialogFragment() {
         buttonSelectFile=root.findViewById(R.id.buttonSelectFile)
 
         return root
+    }
+
+    private fun loadingAlert() {
+        val progressBar = ProgressBar(requireContext())
+
+        val loadAlert = AlertDialog.Builder(requireContext())
+        loadAlert.setCancelable(false)
+        loadAlert.setView(progressBar)
+        alert = loadAlert.create()
+        alert.show()
+    }
+
+    fun newInstance(): AddStudentDialog {
+        return AddStudentDialog()
     }
 }

@@ -17,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.dialogs.AddExamDialog
+import com.ngangavictor.firestore.dialogs.AddStudentDialog
 
 class StudentFragment : Fragment() {
 
@@ -71,6 +73,17 @@ class StudentFragment : Fragment() {
 
                 spinnerAdapter.notifyDataSetChanged()
             }
+
+        fabAddStudent.setOnClickListener {
+            val addStudentDialog = AddStudentDialog().newInstance()
+            addStudentDialog.isCancelable = false
+            requireActivity().supportFragmentManager.let {
+                addStudentDialog.show(
+                    it,
+                    "dialog add student"
+                )
+            }
+        }
 
         return root
     }
