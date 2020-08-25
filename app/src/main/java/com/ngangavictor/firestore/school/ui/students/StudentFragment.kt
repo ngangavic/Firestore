@@ -26,8 +26,9 @@ import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.dialogs.AddExamDialog
 import com.ngangavictor.firestore.dialogs.AddStudentDialog
+import com.ngangavictor.firestore.listeners.ListenerStudent
 
-class StudentFragment : Fragment() {
+class StudentFragment : Fragment(),ListenerStudent {
 
     lateinit var fabAddStudent:FloatingActionButton
 
@@ -90,7 +91,7 @@ class StudentFragment : Fragment() {
                     ), 200
                 )
             }else{
-                val addStudentDialog = AddStudentDialog().newInstance()
+                val addStudentDialog = AddStudentDialog(this).newInstance()
                 addStudentDialog.isCancelable = true
                 requireActivity().supportFragmentManager.let {
                     addStudentDialog.show(
@@ -177,6 +178,14 @@ class StudentFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(StudentViewModel::class.java)
         // TODO: Use the ViewModel
+    }
+
+    override fun addStudent(message: String) {
+        if (message==="complete") {
+            Snackbar.make(requireView(), "Students added successfully", Snackbar.LENGTH_LONG).show()
+        }else{
+            Snackbar.make(requireView(), "Error: $message", Snackbar.LENGTH_LONG).show()
+        }
     }
 
 }
