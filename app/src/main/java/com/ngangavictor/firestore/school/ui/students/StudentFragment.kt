@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,22 +28,19 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.adapter.StudentAdapter
-import com.ngangavictor.firestore.adapter.SubjectAdapter
-import com.ngangavictor.firestore.dialogs.AddExamDialog
 import com.ngangavictor.firestore.dialogs.AddStudentDialog
 import com.ngangavictor.firestore.listeners.ListenerStudent
 import com.ngangavictor.firestore.models.StudentModel
-import com.ngangavictor.firestore.models.SubjectModel
 
-class StudentFragment : Fragment(),ListenerStudent {
+class StudentFragment : Fragment(), ListenerStudent {
 
-    lateinit var fabAddStudent:FloatingActionButton
+    lateinit var fabAddStudent: FloatingActionButton
 
-    lateinit var root:View
+    lateinit var root: View
 
-    lateinit var recyclerViewStudents:RecyclerView
+    lateinit var recyclerViewStudents: RecyclerView
 
-    lateinit var spinnerClass:Spinner
+    lateinit var spinnerClass: Spinner
 
     private lateinit var viewModel: StudentViewModel
 
@@ -65,13 +61,13 @@ class StudentFragment : Fragment(),ListenerStudent {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root=inflater.inflate(R.layout.student_fragment, container, false)
+        root = inflater.inflate(R.layout.student_fragment, container, false)
 
         viewModel = ViewModelProviders.of(this).get(StudentViewModel::class.java)
 
-        fabAddStudent=root.findViewById(R.id.fabAddStudent)
-        recyclerViewStudents=root.findViewById(R.id.recyclerViewStudents)
-        spinnerClass=root.findViewById(R.id.spinnerClass)
+        fabAddStudent = root.findViewById(R.id.fabAddStudent)
+        recyclerViewStudents = root.findViewById(R.id.recyclerViewStudents)
+        spinnerClass = root.findViewById(R.id.spinnerClass)
 
         recyclerViewStudents.layoutManager =
             LinearLayoutManager(requireContext())
@@ -81,7 +77,7 @@ class StudentFragment : Fragment(),ListenerStudent {
         auth = Firebase.auth
 
         classList = ArrayList()
-        studentList=ArrayList()
+        studentList = ArrayList()
 
         (classList as ArrayList<String>).add("Select Class")
 
@@ -100,14 +96,14 @@ class StudentFragment : Fragment(),ListenerStudent {
 
             }
 
-        spinnerClass.setOnItemSelectedListener(object :AdapterView.OnItemSelectedListener{
+        spinnerClass.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                if (parent!!.getItemAtPosition(position).toString()!="Select Class") {
+                if (parent!!.getItemAtPosition(position).toString() != "Select Class") {
                     viewModel.getStudentsData(parent.getItemAtPosition(position).toString())
                         .observe(viewLifecycleOwner,
                             Observer {
@@ -139,7 +135,7 @@ class StudentFragment : Fragment(),ListenerStudent {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                     ), 200
                 )
-            }else{
+            } else {
                 val addStudentDialog = AddStudentDialog(this).newInstance()
                 addStudentDialog.isCancelable = true
                 requireActivity().supportFragmentManager.let {
@@ -156,11 +152,13 @@ class StudentFragment : Fragment(),ListenerStudent {
 
     private fun checkPermission(): Boolean {
         val resultReadExternalStorage =
-            ContextCompat.checkSelfPermission(requireContext(),
+            ContextCompat.checkSelfPermission(
+                requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         val resultWriteExternalStorage =
-            ContextCompat.checkSelfPermission(requireContext(),
+            ContextCompat.checkSelfPermission(
+                requireContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
 
@@ -222,17 +220,10 @@ class StudentFragment : Fragment(),ListenerStudent {
             .show()
     }
 
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProviders.of(this).get(StudentViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
-
     override fun addStudent(message: String) {
-        if (message==="complete") {
+        if (message === "complete") {
             Snackbar.make(requireView(), "Students added successfully", Snackbar.LENGTH_LONG).show()
-        }else{
+        } else {
             Snackbar.make(requireView(), "Error: $message", Snackbar.LENGTH_LONG).show()
         }
     }
