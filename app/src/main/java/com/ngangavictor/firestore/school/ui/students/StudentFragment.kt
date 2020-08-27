@@ -6,15 +6,19 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -24,9 +28,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.adapter.StudentAdapter
+import com.ngangavictor.firestore.adapter.SubjectAdapter
 import com.ngangavictor.firestore.dialogs.AddExamDialog
 import com.ngangavictor.firestore.dialogs.AddStudentDialog
 import com.ngangavictor.firestore.listeners.ListenerStudent
+import com.ngangavictor.firestore.models.StudentModel
+import com.ngangavictor.firestore.models.SubjectModel
 
 class StudentFragment : Fragment(),ListenerStudent {
 
@@ -37,10 +45,6 @@ class StudentFragment : Fragment(),ListenerStudent {
     lateinit var recyclerViewStudents:RecyclerView
 
     lateinit var spinnerClass:Spinner
-
-    companion object {
-        fun newInstance() = StudentFragment()
-    }
 
     private lateinit var viewModel: StudentViewModel
 
@@ -53,20 +57,33 @@ class StudentFragment : Fragment(),ListenerStudent {
     private lateinit var database: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
+    private lateinit var studentAdapter: StudentAdapter
+
+    private lateinit var studentList: MutableList<StudentModel>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         root=inflater.inflate(R.layout.student_fragment, container, false)
 
+        viewModel = ViewModelProviders.of(this).get(StudentViewModel::class.java)
+
         fabAddStudent=root.findViewById(R.id.fabAddStudent)
         recyclerViewStudents=root.findViewById(R.id.recyclerViewStudents)
         spinnerClass=root.findViewById(R.id.spinnerClass)
+
+        recyclerViewStudents.layoutManager =
+            LinearLayoutManager(requireContext())
+        recyclerViewStudents.setHasFixedSize(true)
 
         database = Firebase.firestore
         auth = Firebase.auth
 
         classList = ArrayList()
+        studentList=ArrayList()
+
+        (classList as ArrayList<String>).add("Select Class")
 
         spinnerAdapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, classList)
@@ -80,7 +97,39 @@ class StudentFragment : Fragment(),ListenerStudent {
                 }
 
                 spinnerAdapter.notifyDataSetChanged()
+
             }
+
+        spinnerClass.setOnItemSelectedListener(object :AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (parent!!.getItemAtPosition(position).toString()!="Select Class") {
+                    viewModel.getStudentsData(parent.getItemAtPosition(position).toString())
+                        .observe(viewLifecycleOwner,
+                            Observer {
+                                studentList = it as MutableList<StudentModel>
+
+                                studentAdapter = StudentAdapter(
+                                    requireContext(), studentList as ArrayList<StudentModel>
+                                )
+
+                                studentAdapter.notifyDataSetChanged()
+
+                                recyclerViewStudents.adapter = studentAdapter
+                            })
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        })
+
 
         fabAddStudent.setOnClickListener {
             if (!checkPermission()) {
@@ -174,11 +223,11 @@ class StudentFragment : Fragment(),ListenerStudent {
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(StudentViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        viewModel = ViewModelProviders.of(this).get(StudentViewModel::class.java)
+//        // TODO: Use the ViewModel
+//    }
 
     override fun addStudent(message: String) {
         if (message==="complete") {
