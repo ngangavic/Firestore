@@ -9,9 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -36,12 +34,18 @@ class AddStudentDialog(val listenerStudent: ListenerStudent) : DialogFragment() 
     private lateinit var buttonUpload: Button
     private lateinit var buttonSelectFile: Button
 
+    private lateinit var spinnerClass:Spinner
+
     lateinit var alert: AlertDialog
 
     lateinit var database: FirebaseFirestore
     lateinit var auth: FirebaseAuth
 
     private lateinit var input: InputStream
+
+    private lateinit var spinnerAdapter: ArrayAdapter<String>
+
+    private lateinit var classList: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,10 +61,20 @@ class AddStudentDialog(val listenerStudent: ListenerStudent) : DialogFragment() 
         buttonUpload = root.findViewById(R.id.buttonUpload)
         buttonSelectFile = root.findViewById(R.id.buttonSelectFile)
 
+        spinnerClass = root.findViewById(R.id.spinnerClass)
+
         database = Firebase.firestore
         auth = Firebase.auth
 
+        classList=ArrayList()
+
+        spinnerAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, classList)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerClass.adapter = spinnerAdapter
+
         buttonUpload.visibility = View.GONE
+        spinnerClass.visibility = View.GONE
 
         buttonSelectFile.setOnClickListener {
             val i = Intent(Intent.ACTION_GET_CONTENT)
@@ -74,6 +88,15 @@ class AddStudentDialog(val listenerStudent: ListenerStudent) : DialogFragment() 
 
         textViewData.movementMethod = ScrollingMovementMethod()
 
+        database.collection("classes").document(auth.currentUser!!.uid)
+            .addSnapshotListener { value, error ->
+                for (i in value!!.data!!.values) {
+                    (classList as ArrayList<String>).add(i.toString())
+                }
+
+                spinnerAdapter.notifyDataSetChanged()
+            }
+
         return root
     }
 
@@ -81,7 +104,6 @@ class AddStudentDialog(val listenerStudent: ListenerStudent) : DialogFragment() 
         loadingAlert()
         val resultList: MutableList<Any> = ArrayList()
         val reader = BufferedReader(InputStreamReader(input))
-        var count = 0
         try {
             textViewData.append("The following data was uploaded" + "\n")
 
@@ -102,21 +124,25 @@ class AddStudentDialog(val listenerStudent: ListenerStudent) : DialogFragment() 
 
                     val adm = "ADM: " + data.substringBefore(",") + " "
                     val name = "NAME: " + data.substringAfter(",").substringBefore(",") + " "
-                    val classs = "CLASS: " + data.substringAfter(",").substringAfter(",") + " "
+                    val kcpe = "KCPE: " + data.substringAfter(",").substringAfter(",").substringBefore(",") + " "
+                    val parent = "#: " + data.substringAfter(",").substringAfter(",").substringAfter(",").replace(",","") + " "
 
-                    Log.e("ADM:", it.toString().substringBefore(","))
-                    Log.e("NAME:", it.toString().substringAfter(",").substringBefore(","))
-                    Log.e("CLASS", it.toString().substringAfter(",").substringAfter(","))
+                    Log.e("ADM:", adm)
+                    Log.e("NAME:", name)
+                    Log.e("KCPE", kcpe)
+                    Log.e("#", parent)
 
-                    textViewData.append(adm + name + classs + "\n")
+                    textViewData.append(adm + name + spinnerClass.selectedItem.toString()  +kcpe + parent+ "\n")
 
                     val insert = hashMapOf(
                         "NAME" to data.substringAfter(",").substringBefore(","),
-                        "CLASS" to data.substringAfter(",").substringAfter(",")
+                        "CLASS" to spinnerClass.selectedItem.toString(),
+                        "KCPE" to data.substringAfter(",").substringAfter(",").substringBefore(","),
+                        "PARENT-PHONE" to data.substringAfter(",").substringAfter(",").substringAfter(",").replace(",","")
                     )
 
                     database.collection("schools").document(auth.currentUser!!.uid)
-                        .collection("students")
+                        .collection("students").document("classes").collection(spinnerClass.selectedItem as String)
                         .document(data.substringBefore(","))
                         .set(insert)
                         .addOnCompleteListener {itl->
@@ -129,6 +155,7 @@ class AddStudentDialog(val listenerStudent: ListenerStudent) : DialogFragment() 
                             }
                         }
                 }
+                dialog!!.cancel()
             }
 
         } catch (ex: IOException) {
@@ -147,6 +174,7 @@ class AddStudentDialog(val listenerStudent: ListenerStudent) : DialogFragment() 
 
         if (requestCode == 200 && resultCode == AppCompatActivity.RESULT_OK) {
             buttonUpload.visibility = View.VISIBLE
+            spinnerClass.visibility=View.VISIBLE
             textViewMessage.text = "File selected"
 
             val uri = data?.data
