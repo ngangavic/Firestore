@@ -11,12 +11,14 @@ import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.listeners.ListenerResult
 import com.ngangavictor.firestore.models.StudentModel
 
-class AddResultsDialog : DialogFragment() {
+class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragment() {
 
     lateinit var root: View
 
@@ -131,6 +133,10 @@ class AddResultsDialog : DialogFragment() {
             addExam()
         }
 
+        buttonCancel.setOnClickListener {
+            dialog!!.dismiss()
+        }
+
         return root
     }
 
@@ -142,6 +148,9 @@ class AddResultsDialog : DialogFragment() {
             spinnerSubject.performClick()
         } else {
           loadingAlert()
+
+          listenerResult.selectedExam(examKeyList[pst],spinnerSubject.selectedItem.toString())
+
             database.collection("schools").document(auth.currentUser!!.uid)
                 .collection("students")
                 .document("classes").collection(classList[pst])
@@ -162,7 +171,7 @@ class AddResultsDialog : DialogFragment() {
                             .document(examKeyList[pst])
                             .collection(spinnerSubject.selectedItem.toString())
                             .document(i.id)
-                            .set(marks)
+                            .set(marks, SetOptions.merge())
                     }else{
                         dialog!!.dismiss()
                         alert.cancel()
@@ -172,6 +181,7 @@ class AddResultsDialog : DialogFragment() {
 
                     }
                 }
+
         }
 
     }
@@ -187,7 +197,7 @@ class AddResultsDialog : DialogFragment() {
     }
 
     fun newInstance(): AddResultsDialog {
-        return AddResultsDialog()
+        return AddResultsDialog(listenerResult)
     }
 
 }
