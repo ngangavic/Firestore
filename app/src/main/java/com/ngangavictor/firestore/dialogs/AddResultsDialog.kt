@@ -1,14 +1,12 @@
 package com.ngangavictor.firestore.dialogs
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -16,13 +14,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.models.StudentModel
 
 class AddResultsDialog : DialogFragment() {
 
     lateinit var root: View
 
     lateinit var spinnerExam: Spinner
-    lateinit var spinnerClass: Spinner
     lateinit var spinnerSubject: Spinner
 
     lateinit var buttonCancel: Button
@@ -38,6 +36,10 @@ class AddResultsDialog : DialogFragment() {
     private lateinit var classList: List<String>
     private lateinit var subjectList: List<String>
     private lateinit var examKeyList: List<String>
+
+    private var pst:Int = 0
+
+    private lateinit var alert: AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,9 +96,10 @@ class AddResultsDialog : DialogFragment() {
                     (classList as ArrayList<String>).add(i.data.get("class").toString())
 
                     (examList as ArrayList<String>).add(
-                        i.data.get("class").toString() +" "+ i.data.get(
+                        i.data.get("class").toString() + " " + i.data.get(
                             "examName"
-                        ).toString() +" "+ i.data.get("examTerm").toString() +" "+ i.data.get("examYear")
+                        ).toString() + " " + i.data.get("examTerm")
+                            .toString() + " " + i.data.get("examYear")
                             .toString()
                     )
                 }
@@ -104,37 +107,83 @@ class AddResultsDialog : DialogFragment() {
                 spinnerExamAdapter.notifyDataSetChanged()
             }
 
-        spinnerExam.setOnItemSelectedListener(object :AdapterView.OnItemSelectedListener{
+        spinnerExam.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                Log.e("SELECTED EXAM",parent!!.getItemAtPosition(position).toString())
-                Log.e("SELECTED CLASS",classList.get(position))
-                Log.e("SELECTED EXAM KEY",examKeyList.get(position))
+
+                pst=position
+                Log.e("SELECTED EXAM", parent!!.getItemAtPosition(position).toString())
+                Log.e("SELECTED CLASS", classList[position])
+                Log.e("SELECTED EXAM KEY", examKeyList[position])
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
-        })
+        }
+
+        buttonAdd.setOnClickListener {
+            addExam()
+        }
 
         return root
     }
 
     private fun addExam() {
-        if (spinnerClass.selectedItem.toString() == "Select Class") {
-            spinnerClass.performClick()
-        } else if (spinnerExam.selectedItem.toString() == "Select Exam") {
+
+      if (spinnerExam.selectedItem.toString() == "Select Exam") {
             spinnerExam.performClick()
         } else if (spinnerSubject.selectedItem.toString() == "Select Subject") {
             spinnerSubject.performClick()
         } else {
+          loadingAlert()
+            database.collection("schools").document(auth.currentUser!!.uid)
+                .collection("students")
+                .document("classes").collection(classList[pst])
+                .addSnapshotListener { value, error ->
 
+                    var count=0
+
+                    for (i in value!!) {
+
+                    if (count!=i.data.size) {
+
+                        val marks = hashMapOf(
+                            "marks" to 0,
+                            "grade" to "E"
+                        )
+                        database.collection("schools").document(auth.currentUser!!.uid)
+                            .collection("results")
+                            .document(examKeyList[pst])
+                            .collection(spinnerSubject.selectedItem.toString())
+                            .document(i.id)
+                            .set(marks)
+                    }else{
+                        dialog!!.dismiss()
+                        alert.cancel()
+                    }
+
+                  count++
+
+                    }
+                }
         }
+
+    }
+
+    private fun loadingAlert() {
+        val progressBar = ProgressBar(requireContext())
+
+        val loadAlert = AlertDialog.Builder(requireContext())
+        loadAlert.setCancelable(false)
+        loadAlert.setView(progressBar)
+        alert = loadAlert.create()
+        alert.show()
     }
 
     fun newInstance(): AddResultsDialog {
