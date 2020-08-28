@@ -16,7 +16,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.listeners.ListenerResult
-import com.ngangavictor.firestore.models.StudentModel
 
 class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragment() {
 
@@ -39,7 +38,7 @@ class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragm
     private lateinit var subjectList: List<String>
     private lateinit var examKeyList: List<String>
 
-    private var pst:Int = 0
+    private var pst: Int = 0
 
     private lateinit var alert: AlertDialog
 
@@ -117,7 +116,7 @@ class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragm
                 id: Long
             ) {
 
-                pst=position
+                pst = position
                 Log.e("SELECTED EXAM", parent!!.getItemAtPosition(position).toString())
                 Log.e("SELECTED CLASS", classList[position])
                 Log.e("SELECTED EXAM KEY", examKeyList[position])
@@ -142,42 +141,42 @@ class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragm
 
     private fun addExam() {
 
-      if (spinnerExam.selectedItem.toString() == "Select Exam") {
+        if (spinnerExam.selectedItem.toString() == "Select Exam") {
             spinnerExam.performClick()
         } else if (spinnerSubject.selectedItem.toString() == "Select Subject") {
             spinnerSubject.performClick()
         } else {
-          loadingAlert()
+            loadingAlert()
 
-          listenerResult.selectedExam(examKeyList[pst],spinnerSubject.selectedItem.toString())
+            listenerResult.selectedExam(examKeyList[pst], spinnerSubject.selectedItem.toString())
 
             database.collection("schools").document(auth.currentUser!!.uid)
                 .collection("students")
                 .document("classes").collection(classList[pst])
                 .addSnapshotListener { value, error ->
 
-                    var count=0
+                    var count = 0
 
                     for (i in value!!) {
 
-                    if (count!=i.data.size) {
+                        if (count != i.data.size) {
 
-                        val marks = hashMapOf(
-                            "marks" to 0,
-                            "grade" to "E"
-                        )
-                        database.collection("schools").document(auth.currentUser!!.uid)
-                            .collection("results")
-                            .document(examKeyList[pst])
-                            .collection(spinnerSubject.selectedItem.toString())
-                            .document(i.id)
-                            .set(marks, SetOptions.merge())
-                    }else{
-                        dialog!!.dismiss()
-                        alert.cancel()
-                    }
+                            val marks = hashMapOf(
+                                "marks" to 0,
+                                "grade" to "E"
+                            )
+                            database.collection("schools").document(auth.currentUser!!.uid)
+                                .collection("results")
+                                .document(examKeyList[pst])
+                                .collection(spinnerSubject.selectedItem.toString())
+                                .document(i.id)
+                                .set(marks, SetOptions.merge())
+                        } else {
+                            dialog!!.dismiss()
+                            alert.cancel()
+                        }
 
-                  count++
+                        count++
 
                     }
                 }

@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ngangavictor.firestore.models.ResultModel
-import com.ngangavictor.firestore.models.StudentModel
 import com.ngangavictor.firestore.repos.FirestoreRepository
 
 class ResultViewModel : ViewModel() {
@@ -15,16 +14,16 @@ class ResultViewModel : ViewModel() {
 
     private val resultData = MutableLiveData<List<ResultModel>>()
 
-    fun getResultData(subjectName: String,examId:String): MutableLiveData<List<ResultModel>> {
+    fun getResultData(subjectName: String, examId: String): MutableLiveData<List<ResultModel>> {
 
-        firestoreRepository.getResults(examId,subjectName).addSnapshotListener { value, error ->
+        firestoreRepository.getResults(examId, subjectName).addSnapshotListener { value, error ->
             resultList.clear()
             for (i in value!!) {
-                Log.e("RESULTS",i.id+" "+ i.data["marks"].toString())
+                Log.e("RESULTS", i.id + " " + i.data["marks"].toString())
                 resultList.add(
                     ResultModel(
                         i.id,
-                       i.data["marks"].toString()
+                        i.data["marks"].toString()
                     )
                 )
             }

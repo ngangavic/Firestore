@@ -43,7 +43,7 @@ class StudentAdapter(
                         R.id.action_view_results_student -> {
                             return true
                         }
-                        R.id.action_sms_parent_student->{
+                        R.id.action_sms_parent_student -> {
                             return true
                         }
                     }

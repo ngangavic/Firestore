@@ -96,7 +96,7 @@ class StudentFragment : Fragment(), ListenerStudent {
 
             }
 
-        spinnerClass.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+        spinnerClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -124,7 +124,7 @@ class StudentFragment : Fragment(), ListenerStudent {
 
             }
 
-        })
+        }
 
 
         fabAddStudent.setOnClickListener {

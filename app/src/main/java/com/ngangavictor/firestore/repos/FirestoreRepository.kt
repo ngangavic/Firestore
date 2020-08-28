@@ -33,8 +33,8 @@ class FirestoreRepository {
             .document("classes").collection(className)
     }
 
-    fun getResults(examId:String,subjectName:String): CollectionReference {
-       return database.collection("schools").document(auth.currentUser!!.uid)
+    fun getResults(examId: String, subjectName: String): CollectionReference {
+        return database.collection("schools").document(auth.currentUser!!.uid)
             .collection("results").document(examId).collection(subjectName)
     }
 

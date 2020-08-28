@@ -14,21 +14,21 @@ class TeacherFragment : Fragment() {
 
     private lateinit var viewModel: TeacherViewModel
 
-    private lateinit var root:View
+    private lateinit var root: View
 
-    private lateinit var recyclerViewTeachers:RecyclerView
+    private lateinit var recyclerViewTeachers: RecyclerView
 
-    private lateinit var fabAddTeacher:FloatingActionButton
+    private lateinit var fabAddTeacher: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root= inflater.inflate(R.layout.teacher_fragment, container, false)
+        root = inflater.inflate(R.layout.teacher_fragment, container, false)
 
-        recyclerViewTeachers=root.findViewById(R.id.recyclerViewTeachers)
+        recyclerViewTeachers = root.findViewById(R.id.recyclerViewTeachers)
 
-        fabAddTeacher=root.findViewById(R.id.fabAddTeacher)
+        fabAddTeacher = root.findViewById(R.id.fabAddTeacher)
 
         viewModel = ViewModelProviders.of(this).get(TeacherViewModel::class.java)
 

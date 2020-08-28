@@ -9,30 +9,30 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.ngangavictor.firestore.R
 
-class AddTeacherDialog:DialogFragment() {
+class AddTeacherDialog : DialogFragment() {
 
-    lateinit var root:View
+    lateinit var root: View
 
-    private lateinit var editTextName:EditText
-    private lateinit var editTextPhone:EditText
-    private lateinit var editTextEmail:EditText
+    private lateinit var editTextName: EditText
+    private lateinit var editTextPhone: EditText
+    private lateinit var editTextEmail: EditText
 
-    private lateinit var buttonAdd:Button
-    private lateinit var buttonCancel:Button
+    private lateinit var buttonAdd: Button
+    private lateinit var buttonCancel: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        root=inflater.inflate(R.layout.dialog_add_teacher,container,false)
+        root = inflater.inflate(R.layout.dialog_add_teacher, container, false)
 
-        editTextName=root.findViewById(R.id.editTextName)
-        editTextPhone=root.findViewById(R.id.editTextPhone)
-        editTextEmail=root.findViewById(R.id.editTextEmail)
+        editTextName = root.findViewById(R.id.editTextName)
+        editTextPhone = root.findViewById(R.id.editTextPhone)
+        editTextEmail = root.findViewById(R.id.editTextEmail)
 
-        buttonAdd=root.findViewById(R.id.buttonAdd)
-        buttonCancel=root.findViewById(R.id.buttonCancel)
+        buttonAdd = root.findViewById(R.id.buttonAdd)
+        buttonCancel = root.findViewById(R.id.buttonCancel)
 
         return root
     }

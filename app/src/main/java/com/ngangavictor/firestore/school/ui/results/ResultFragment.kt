@@ -11,25 +11,20 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngangavictor.firestore.R
-import com.ngangavictor.firestore.adapter.ExamAdapter
 import com.ngangavictor.firestore.adapter.ResultAdapter
-import com.ngangavictor.firestore.dialogs.AddExamDialog
 import com.ngangavictor.firestore.dialogs.AddResultsDialog
 import com.ngangavictor.firestore.listeners.ListenerResult
-import com.ngangavictor.firestore.listeners.ListenerStudent
-import com.ngangavictor.firestore.models.ClassModel
-import com.ngangavictor.firestore.models.ExamModel
 import com.ngangavictor.firestore.models.ResultModel
 
-class ResultFragment : Fragment(),ListenerResult {
+class ResultFragment : Fragment(), ListenerResult {
 
     private lateinit var viewModel: ResultViewModel
 
-    private lateinit var root:View
+    private lateinit var root: View
 
     private lateinit var resultAdapter: ResultAdapter
 
-    private lateinit var recyclerViewResults:RecyclerView
+    private lateinit var recyclerViewResults: RecyclerView
 
     private lateinit var resultList: MutableList<ResultModel>
 
@@ -38,13 +33,13 @@ class ResultFragment : Fragment(),ListenerResult {
         savedInstanceState: Bundle?
     ): View? {
 
-        root=inflater.inflate(R.layout.result_fragment, container, false)
+        root = inflater.inflate(R.layout.result_fragment, container, false)
 
         viewModel = ViewModelProviders.of(this).get(ResultViewModel::class.java)
 
-        recyclerViewResults=root.findViewById(R.id.recyclerViewResults)
+        recyclerViewResults = root.findViewById(R.id.recyclerViewResults)
 
-        resultList=ArrayList()
+        resultList = ArrayList()
 
         recyclerViewResults.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewResults.setHasFixedSize(true)
@@ -62,8 +57,8 @@ class ResultFragment : Fragment(),ListenerResult {
     }
 
     override fun selectedExam(examId: String, subjectName: String) {
-Log.e("RESULTS FRAG",examId+" "+subjectName)
-        viewModel.getResultData(subjectName,examId).observe(viewLifecycleOwner, Observer {
+        Log.e("RESULTS FRAG", examId + " " + subjectName)
+        viewModel.getResultData(subjectName, examId).observe(viewLifecycleOwner, Observer {
             resultList = it as MutableList<ResultModel>
 
             resultAdapter = ResultAdapter(
