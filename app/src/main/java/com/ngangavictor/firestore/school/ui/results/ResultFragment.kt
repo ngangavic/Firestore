@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.dialogs.AddExamDialog
+import com.ngangavictor.firestore.dialogs.AddResultsDialog
 
 class ResultFragment : Fragment() {
 
@@ -20,6 +22,16 @@ class ResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val addResultsDialog = AddResultsDialog().newInstance()
+        addResultsDialog.isCancelable = false
+        requireActivity().supportFragmentManager.let {
+            addResultsDialog.show(
+                it,
+                "dialog add results"
+            )
+        }
+
         return inflater.inflate(R.layout.result_fragment, container, false)
     }
 
