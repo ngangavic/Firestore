@@ -1,9 +1,11 @@
 package com.ngangavictor.firestore.dialogs
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -30,12 +32,12 @@ class AddResultsDialog : DialogFragment() {
     lateinit var auth: FirebaseAuth
 
     lateinit var spinnerExamAdapter: ArrayAdapter<String>
-    lateinit var spinnerClassAdapter: ArrayAdapter<String>
     lateinit var spinnerSubjectAdapter: ArrayAdapter<String>
 
     private lateinit var examList: List<String>
     private lateinit var classList: List<String>
     private lateinit var subjectList: List<String>
+    private lateinit var examKeyList: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +47,6 @@ class AddResultsDialog : DialogFragment() {
         root = layoutInflater.inflate(R.layout.dialog_add_result, container, false)
 
         spinnerSubject = root.findViewById(R.id.spinnerSubject)
-        spinnerClass = root.findViewById(R.id.spinnerClass)
         spinnerExam = root.findViewById(R.id.spinnerExam)
 
         buttonCancel = root.findViewById(R.id.buttonCancel)
@@ -57,34 +58,24 @@ class AddResultsDialog : DialogFragment() {
         classList = ArrayList()
         examList = ArrayList()
         subjectList = ArrayList()
+        examKeyList = ArrayList()
 
         (classList as ArrayList<String>).add("Select Class")
         (examList as ArrayList<String>).add("Select Exam")
         (subjectList as ArrayList<String>).add("Select Subject")
+        (examKeyList as ArrayList<String>).add("Select Key")
 
         spinnerExamAdapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, examList)
         spinnerExamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerExam.adapter = spinnerExamAdapter
 
-        spinnerClassAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, classList)
-        spinnerClassAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerClass.adapter = spinnerClassAdapter
 
         spinnerSubjectAdapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, subjectList)
         spinnerSubjectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSubject.adapter = spinnerSubjectAdapter
 
-        database.collection("classes").document(auth.currentUser!!.uid)
-            .addSnapshotListener { value, error ->
-                for (i in value!!.data!!.values) {
-                    (classList as ArrayList<String>).add(i.toString())
-                }
-
-                spinnerClassAdapter.notifyDataSetChanged()
-            }
 
         database.collection("schools").document(auth.currentUser!!.uid).collection("subjects")
             .addSnapshotListener { value, error ->
@@ -98,16 +89,38 @@ class AddResultsDialog : DialogFragment() {
         database.collection("schools").document(auth.currentUser!!.uid).collection("exams")
             .addSnapshotListener { value, error ->
                 for (i in value!!) {
+                    (examKeyList as ArrayList<String>).add(i.id)
+
+                    (classList as ArrayList<String>).add(i.data.get("class").toString())
+
                     (examList as ArrayList<String>).add(
-                        i.data.get("class").toString() + i.data.get(
+                        i.data.get("class").toString() +" "+ i.data.get(
                             "examName"
-                        ).toString() + i.data.get("examTerm").toString() + i.data.get("examYear")
+                        ).toString() +" "+ i.data.get("examTerm").toString() +" "+ i.data.get("examYear")
                             .toString()
                     )
                 }
 
                 spinnerExamAdapter.notifyDataSetChanged()
             }
+
+        spinnerExam.setOnItemSelectedListener(object :AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                Log.e("SELECTED EXAM",parent!!.getItemAtPosition(position).toString())
+                Log.e("SELECTED CLASS",classList.get(position))
+                Log.e("SELECTED EXAM KEY",examKeyList.get(position))
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+        })
 
         return root
     }

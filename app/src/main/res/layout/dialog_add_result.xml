@@ -33,18 +33,6 @@
         android:background="?android:attr/listDivider" />
 
     <Spinner
-        android:id="@+id/spinnerClass"
-        android:padding="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <View
-        android:id="@+id/divider9"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
-
-    <Spinner
         android:id="@+id/spinnerSubject"
         android:padding="20dp"
         android:layout_width="match_parent"
