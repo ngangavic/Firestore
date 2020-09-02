@@ -178,7 +178,7 @@ class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragm
                                 .document(examKeyList[pst])
                                 .collection(spinnerSubject.selectedItem.toString())
                                 .document(i.id)
-                                .set(marks, SetOptions.merge())
+//                                .set(marks, SetOptions.merge())
                         } else {
                             dialog!!.dismiss()
                             alert.cancel()
