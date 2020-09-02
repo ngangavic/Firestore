@@ -21,8 +21,6 @@ class ResultAdapter(
 private val listenerResult: ListenerResult) :
     RecyclerView.Adapter<ResultHolder>() {
 
-    private var database:FirebaseFirestore=Firebase.firestore
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultHolder {
         val viewHolder: ResultHolder?
         val layoutView =
@@ -41,12 +39,19 @@ private val listenerResult: ListenerResult) :
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                if (count>2){
+                if(s.isNullOrEmpty()) {
+
+                }else{
+                if (s.length>=2){
                     //save
-                    listenerResult.saveMarks(holder.editTextMarks.text.toString().toInt(),results[position].adm)
-//                }else{
-//                    listenerResult.error("Error: Input two characters")
-//                }
+                    listenerResult.saveMarks(
+                        holder.editTextMarks.text.toString().toInt(),
+                        results[position].adm
+                    )
+                }else{
+                    listenerResult.error("Error: Input two characters")
+                }
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
