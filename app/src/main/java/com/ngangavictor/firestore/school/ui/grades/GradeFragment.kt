@@ -20,6 +20,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.adapter.StudentAdapter
+import com.ngangavictor.firestore.dialogs.AddExamDialog
+import com.ngangavictor.firestore.dialogs.AddGradeDialog
 import com.ngangavictor.firestore.models.StudentModel
 import com.ngangavictor.firestore.school.ui.exams.ExamViewModel
 
@@ -152,6 +154,17 @@ checkGrades(selectedClass,selectedSubject)
 
             }
 
+        }
+
+        fabAddGrade.setOnClickListener {
+            val addGradeDialog = AddGradeDialog().newInstance()
+            addGradeDialog.isCancelable = false
+            requireActivity().supportFragmentManager.let {
+                addGradeDialog.show(
+                    it,
+                    "dialog add grade"
+                )
+            }
         }
 
 

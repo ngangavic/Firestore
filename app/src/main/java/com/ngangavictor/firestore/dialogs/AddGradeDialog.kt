@@ -43,4 +43,8 @@ class AddGradeDialog:DialogFragment() {
 
         return root
     }
+
+    fun newInstance(): AddGradeDialog {
+        return AddGradeDialog()
+    }
 }
