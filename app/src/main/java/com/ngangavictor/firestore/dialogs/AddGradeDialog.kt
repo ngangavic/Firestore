@@ -1,6 +1,7 @@
 package com.ngangavictor.firestore.dialogs
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +16,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.listeners.ListenerGrade
 
-class AddGradeDialog:DialogFragment() {
+class AddGradeDialog(private val listenerGrade: ListenerGrade):DialogFragment() {
 
     lateinit var root:View
 
@@ -93,12 +95,57 @@ class AddGradeDialog:DialogFragment() {
                 }
             }
 
+        buttonAdd.setOnClickListener { addGrade() }
+
+        buttonCancel.setOnClickListener { dismiss() }
+
         return root
+    }
+
+    private fun addGrade(){
+        val grade=editTextGrade.text.toString()
+        val start=editTextStartRange.text.toString()
+        val end=editTextEndRange.text.toString()
+        val selectedClass=spinnerClass.selectedItem.toString()
+        val selectedSubject=spinnerSubject.selectedItem.toString()
+        if (selectedClass=="Select Class"){
+            spinnerClass.performClick()
+        }else if (selectedSubject=="Select Subject"){
+            spinnerSubject.performClick()
+        }else if (TextUtils.isEmpty(grade)){
+            editTextGrade.requestFocus()
+            editTextGrade.error="Cannot be empty"
+        }else if (TextUtils.isEmpty(start)){
+editTextStartRange.requestFocus()
+            editTextStartRange.error="Cannot be empty"
+        }else if (TextUtils.isEmpty(end)){
+editTextEndRange.requestFocus()
+            editTextEndRange.error="Cannot be empty"
+        }else{
+
+            val gradeData= hashMapOf(
+                "grade" to grade,
+                "start" to start,
+                "end" to end
+            )
+
+            database.collection("schools").document(auth.currentUser!!.uid).collection("grades").document(selectedClass)
+                .collection(selectedSubject).add(gradeData)
+                .addOnCompleteListener {
+                    if (it.isSuccessful){
+            dismiss()
+                        listenerGrade.addGradeMessage("success",selectedClass,selectedSubject)
+                    }else{
+                     dismiss()
+listenerGrade.addGradeMessage(it.exception!!.message.toString(),selectedClass,selectedSubject)
+                    }
+                }
+        }
     }
 
 
 
     fun newInstance(): AddGradeDialog {
-        return AddGradeDialog()
+        return AddGradeDialog(listenerGrade)
     }
 }
