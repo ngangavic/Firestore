@@ -1,6 +1,7 @@
 package com.ngangavictor.firestore.school.ui.grades
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,9 @@ class GradeFragment : Fragment() {
     private lateinit var spinnerClassAdapter: ArrayAdapter<String>
     private lateinit var spinnerSubjectAdapter: ArrayAdapter<String>
 
+    private lateinit var selectedClass: String
+    private lateinit var selectedSubject: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,6 +73,9 @@ class GradeFragment : Fragment() {
 
         (classList as ArrayList<String>).add("Select Class")
         (subjectList as ArrayList<String>).add("Select Subject")
+
+        selectedSubject="Select Subject"
+        selectedClass="Select Class"
 
         recyclerViewGrade.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewGrade.setHasFixedSize(true)
@@ -107,6 +114,11 @@ class GradeFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
+                selectedClass=parent!!.getItemAtPosition(position).toString()
+
+                if (selectedClass!="Select Class"||selectedSubject!="Select Subject"){
+checkGrades(selectedClass,selectedSubject)
+                }
 
             }
 
@@ -123,6 +135,11 @@ class GradeFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
+                selectedSubject=parent!!.getItemAtPosition(position).toString()
+
+                if (selectedClass!="Select Class"||selectedSubject!="Select Subject"){
+checkGrades(selectedClass,selectedSubject)
+                }
 
             }
 
@@ -134,6 +151,19 @@ class GradeFragment : Fragment() {
 
 
         return root
+    }
+
+    private fun checkGrades(selectedClass:String,selectedSubject:String){
+        database.collection("schools").document(auth.currentUser!!.uid).collection("grades").document(selectedClass)
+            .collection(selectedSubject).get().addOnCompleteListener {
+                if (it.result!!.size()==0){
+Log.e("ERROR","No data")
+                }else{
+                    for (i in it.result!!.documents){
+                        Log.i("DATA",i.data!!.entries.toString())
+                    }
+                }
+            }
     }
 
 }
