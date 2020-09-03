@@ -35,6 +35,7 @@ class GradeFragment : Fragment() {
     private lateinit var recyclerViewGrade:RecyclerView
 
     private lateinit var fabEditGrade:FloatingActionButton
+    private lateinit var fabAddGrade:FloatingActionButton
 
     lateinit var database:FirebaseFirestore
 
@@ -64,6 +65,10 @@ class GradeFragment : Fragment() {
         recyclerViewGrade=root.findViewById(R.id.recyclerViewGrade)
 
         fabEditGrade=root.findViewById(R.id.fabEditGrade)
+        fabAddGrade=root.findViewById(R.id.fabAddGrade)
+
+        fabEditGrade.visibility=View.GONE
+        fabAddGrade.visibility=View.GONE
 
         database=Firebase.firestore
         auth=Firebase.auth
@@ -116,7 +121,7 @@ class GradeFragment : Fragment() {
             ) {
                 selectedClass=parent!!.getItemAtPosition(position).toString()
 
-                if (selectedClass!="Select Class"||selectedSubject!="Select Subject"){
+                if (selectedClass!="Select Class"&&selectedSubject!="Select Subject"){
 checkGrades(selectedClass,selectedSubject)
                 }
 
@@ -137,7 +142,7 @@ checkGrades(selectedClass,selectedSubject)
             ) {
                 selectedSubject=parent!!.getItemAtPosition(position).toString()
 
-                if (selectedClass!="Select Class"||selectedSubject!="Select Subject"){
+                if (selectedClass!="Select Class"&&selectedSubject!="Select Subject"){
 checkGrades(selectedClass,selectedSubject)
                 }
 
@@ -157,9 +162,13 @@ checkGrades(selectedClass,selectedSubject)
         database.collection("schools").document(auth.currentUser!!.uid).collection("grades").document(selectedClass)
             .collection(selectedSubject).get().addOnCompleteListener {
                 if (it.result!!.size()==0){
+                    fabAddGrade.visibility=View.VISIBLE
+                    fabEditGrade.visibility=View.GONE
 Log.e("ERROR","No data")
                 }else{
                     for (i in it.result!!.documents){
+                        fabAddGrade.visibility=View.GONE
+                        fabEditGrade.visibility=View.VISIBLE
                         Log.i("DATA",i.data!!.entries.toString())
                     }
                 }
