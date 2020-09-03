@@ -9,10 +9,10 @@
 
     <View
         android:id="@+id/divider11"
-        app:layout_constraintTop_toBottomOf="@id/spinnerClass"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/spinnerClass" />
 
     <Spinner
         android:id="@+id/spinnerClass"
@@ -31,10 +31,10 @@
 
     <View
         android:id="@+id/divider12"
-        app:layout_constraintTop_toBottomOf="@id/spinnerSubject"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/spinnerSubject" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewGrade"

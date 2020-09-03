@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20sp"
+        android:text="Add Grade"
         android:textAlignment="center"
-        android:text="Add Grade" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <View
         android:id="@+id/divider13"
@@ -28,9 +28,9 @@
 
     <Spinner
         android:id="@+id/spinnerClass"
-        android:padding="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="20dp" />
 
     <TextView
         android:id="@+id/textView22"
@@ -40,9 +40,9 @@
 
     <Spinner
         android:id="@+id/spinnerSubject"
-        android:padding="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="20dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -52,10 +52,10 @@
             android:id="@+id/editTextGrade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Grade"
             android:inputType="textCapCharacters"
             android:maxLength="2"
-            android:textAllCaps="true"
-            android:hint="Grade" />
+            android:textAllCaps="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -66,8 +66,8 @@
             android:id="@+id/editTextStartRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Start Range" />
+            android:hint="Start Range"
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -78,8 +78,8 @@
             android:id="@+id/editTextEndRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="End Range" />
+            android:hint="End Range"
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout

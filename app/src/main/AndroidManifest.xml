@@ -15,8 +15,8 @@
         <activity
             android:name=".school.SchoolActivity"
             android:label="@string/title_activity_school"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".register.DetailsActivity" />
         <activity android:name=".reset.ResetActivity" />
         <activity android:name=".register.RegisterActivity" />

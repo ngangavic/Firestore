@@ -37,11 +37,11 @@ class ResultFragment : Fragment(), ListenerResult {
 
     private lateinit var resultList: MutableList<ResultModel>
 
-    private lateinit var fabSaveResults:FloatingActionButton
+    private lateinit var fabSaveResults: FloatingActionButton
 
     private lateinit var auth: FirebaseAuth
 
-    private lateinit var database:FirebaseFirestore
+    private lateinit var database: FirebaseFirestore
 
     private lateinit var localSharedPreferences: LocalSharedPreferences
 
@@ -59,8 +59,8 @@ class ResultFragment : Fragment(), ListenerResult {
 
         resultList = ArrayList()
 
-        auth=Firebase.auth
-        database=Firebase.firestore
+        auth = Firebase.auth
+        database = Firebase.firestore
 
         recyclerViewResults.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewResults.setHasFixedSize(true)
@@ -78,7 +78,7 @@ class ResultFragment : Fragment(), ListenerResult {
 
         }
 
-        localSharedPreferences= LocalSharedPreferences(requireContext())
+        localSharedPreferences = LocalSharedPreferences(requireContext())
 
         return root
     }
@@ -89,7 +89,7 @@ class ResultFragment : Fragment(), ListenerResult {
             resultList = it as MutableList<ResultModel>
 
             resultAdapter = ResultAdapter(
-                requireContext(), resultList as ArrayList<ResultModel>,this
+                requireContext(), resultList as ArrayList<ResultModel>, this
             )
 
             resultAdapter.notifyDataSetChanged()
@@ -100,16 +100,21 @@ class ResultFragment : Fragment(), ListenerResult {
     }
 
     override fun saveMarks(marks: Int, adm: String) {
-        val newMarks= hashMapOf(
+        val newMarks = hashMapOf(
             "marks" to marks
         )
         database.collection("schools").document(auth.currentUser!!.uid)
-            .collection("results").document(localSharedPreferences.getSelectedExamPref("examKey").toString()).collection(localSharedPreferences.getSelectedExamPref("examSubject").toString()).document(adm).set(newMarks,
-                SetOptions.merge())
+            .collection("results")
+            .document(localSharedPreferences.getSelectedExamPref("examKey").toString())
+            .collection(localSharedPreferences.getSelectedExamPref("examSubject").toString())
+            .document(adm).set(
+                newMarks,
+                SetOptions.merge()
+            )
     }
 
     override fun error(message: String) {
-        Snackbar.make(requireView(),message,Snackbar.LENGTH_LONG).show()
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
     }
 
 }

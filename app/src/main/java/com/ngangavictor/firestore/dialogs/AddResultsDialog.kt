@@ -11,7 +11,6 @@ import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
@@ -43,7 +42,7 @@ class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragm
 
     private lateinit var alert: AlertDialog
 
-    private lateinit var localSharedPreferences:LocalSharedPreferences
+    private lateinit var localSharedPreferences: LocalSharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -139,7 +138,7 @@ class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragm
             dialog!!.dismiss()
         }
 
-        localSharedPreferences= LocalSharedPreferences(requireContext())
+        localSharedPreferences = LocalSharedPreferences(requireContext())
 
         return root
     }
@@ -153,8 +152,11 @@ class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragm
         } else {
             loadingAlert()
 
-            localSharedPreferences.saveSelectedExamPref("examKey",examKeyList[pst])
-            localSharedPreferences.saveSelectedExamPref("examSubject",spinnerSubject.selectedItem.toString())
+            localSharedPreferences.saveSelectedExamPref("examKey", examKeyList[pst])
+            localSharedPreferences.saveSelectedExamPref(
+                "examSubject",
+                spinnerSubject.selectedItem.toString()
+            )
 
             listenerResult.selectedExam(examKeyList[pst], spinnerSubject.selectedItem.toString())
 
