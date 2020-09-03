@@ -1,18 +1,22 @@
 package com.ngangavictor.firestore.school.ui.grades
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,10 +26,11 @@ import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.adapter.StudentAdapter
 import com.ngangavictor.firestore.dialogs.AddExamDialog
 import com.ngangavictor.firestore.dialogs.AddGradeDialog
+import com.ngangavictor.firestore.listeners.ListenerGrade
 import com.ngangavictor.firestore.models.StudentModel
 import com.ngangavictor.firestore.school.ui.exams.ExamViewModel
 
-class GradeFragment : Fragment() {
+class GradeFragment : Fragment(),ListenerGrade {
 
    private lateinit var root:View
 
@@ -68,9 +73,6 @@ class GradeFragment : Fragment() {
 
         fabEditGrade=root.findViewById(R.id.fabEditGrade)
         fabAddGrade=root.findViewById(R.id.fabAddGrade)
-
-        fabEditGrade.visibility=View.GONE
-        fabAddGrade.visibility=View.GONE
 
         database=Firebase.firestore
         auth=Firebase.auth
@@ -157,7 +159,7 @@ checkGrades(selectedClass,selectedSubject)
         }
 
         fabAddGrade.setOnClickListener {
-            val addGradeDialog = AddGradeDialog().newInstance()
+            val addGradeDialog = AddGradeDialog(this).newInstance()
             addGradeDialog.isCancelable = false
             requireActivity().supportFragmentManager.let {
                 addGradeDialog.show(
@@ -175,17 +177,30 @@ checkGrades(selectedClass,selectedSubject)
         database.collection("schools").document(auth.currentUser!!.uid).collection("grades").document(selectedClass)
             .collection(selectedSubject).get().addOnCompleteListener {
                 if (it.result!!.size()==0){
-                    fabAddGrade.visibility=View.VISIBLE
-                    fabEditGrade.visibility=View.GONE
 Log.e("ERROR","No data")
                 }else{
                     for (i in it.result!!.documents){
-                        fabAddGrade.visibility=View.GONE
-                        fabEditGrade.visibility=View.VISIBLE
                         Log.i("DATA",i.data!!.entries.toString())
                     }
                 }
             }
+    }
+
+    override fun addGradeMessage(message: String, selectedClass: String, selectedSubject: String) {
+        val view = requireView()
+        view.let { v ->
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+        }
+        if (message=="success"){
+            spinnerClass.setSelection(classList.indexOf(selectedClass))
+            spinnerSubject.setSelection(subjectList.indexOf(selectedSubject))
+            Snackbar.make(requireView(),"Grade successfully added",Snackbar.LENGTH_LONG).show()
+        }else{
+            spinnerClass.setSelection(classList.indexOf(selectedClass))
+            spinnerSubject.setSelection(subjectList.indexOf(selectedSubject))
+            Snackbar.make(requireView(), "Error: $message",Snackbar.LENGTH_LONG).show()
+        }
     }
 
 }
