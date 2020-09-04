@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,8 +23,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.adapter.ExamAdapter
+import com.ngangavictor.firestore.adapter.GradeAdapter
 import com.ngangavictor.firestore.dialogs.AddGradeDialog
 import com.ngangavictor.firestore.listeners.ListenerGrade
+import com.ngangavictor.firestore.models.ExamModel
+import com.ngangavictor.firestore.models.GradeModel
 
 class GradeFragment : Fragment(), ListenerGrade {
 
@@ -45,12 +50,15 @@ class GradeFragment : Fragment(), ListenerGrade {
 
     private lateinit var classList: List<String>
     private lateinit var subjectList: List<String>
+    private lateinit var gradeList: MutableList<GradeModel>
 
     private lateinit var spinnerClassAdapter: ArrayAdapter<String>
     private lateinit var spinnerSubjectAdapter: ArrayAdapter<String>
 
     private lateinit var selectedClass: String
     private lateinit var selectedSubject: String
+
+    private lateinit var gradeAdapter: GradeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +82,7 @@ class GradeFragment : Fragment(), ListenerGrade {
 
         classList = ArrayList()
         subjectList = ArrayList()
+        gradeList=ArrayList()
 
         (classList as ArrayList<String>).add("Select Class")
         (subjectList as ArrayList<String>).add("Select Subject")
@@ -164,22 +173,37 @@ class GradeFragment : Fragment(), ListenerGrade {
             }
         }
 
-
         return root
     }
 
     private fun checkGrades(selectedClass: String, selectedSubject: String) {
-        database.collection("schools").document(auth.currentUser!!.uid).collection("grades")
-            .document(selectedClass)
-            .collection(selectedSubject).get().addOnCompleteListener {
-                if (it.result!!.size() == 0) {
-                    Log.e("ERROR", "No data")
-                } else {
-                    for (i in it.result!!.documents) {
-                        Log.i("DATA", i.data!!.entries.toString())
-                    }
-                }
+//        database.collection("schools").document(auth.currentUser!!.uid).collection("grades")
+//            .document(selectedClass)
+//            .collection(selectedSubject).get().addOnCompleteListener {
+//                if (it.result!!.size() == 0) {
+//                    Log.e("ERROR", "No data")
+//                } else {
+//                    for (i in it.result!!.documents) {
+//                        Log.i("DATA", i.data!!.entries.toString())
+//                    }
+//                }
+//            }
+
+        gradeViewModel.getGradeData(selectedClass,selectedSubject).observe(viewLifecycleOwner, Observer {
+            gradeList = it as MutableList<GradeModel>
+
+            if (gradeList.size!=0) {
+
+                gradeAdapter = GradeAdapter(
+                    requireContext(), gradeList as ArrayList<GradeModel>, this
+                )
+
+                gradeAdapter.notifyDataSetChanged()
+
+                recyclerViewGrade.adapter = gradeAdapter
             }
+        })
+
     }
 
     override fun addGradeMessage(message: String, selectedClass: String, selectedSubject: String) {

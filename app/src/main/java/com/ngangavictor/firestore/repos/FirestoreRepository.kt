@@ -38,4 +38,10 @@ class FirestoreRepository {
             .collection("results").document(examId).collection(subjectName)
     }
 
+    fun getGrade(selectedClass: String, selectedSubject: String): CollectionReference {
+        return database.collection("schools").document(auth.currentUser!!.uid).collection("grades")
+            .document(selectedClass)
+            .collection(selectedSubject)
+    }
+
 }
