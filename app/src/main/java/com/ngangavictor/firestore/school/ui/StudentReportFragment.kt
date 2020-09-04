@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngangavictor.firestore.R
@@ -17,7 +18,7 @@ class StudentReportFragment : Fragment() {
         fun newInstance() = StudentReportFragment()
     }
 
-    private lateinit var viewModel: StudentReportViewModel
+    private lateinit var studentReportViewModel: StudentReportViewModel
 
     private lateinit var root:View
 
@@ -36,7 +37,7 @@ class StudentReportFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel = ViewModelProviders.of(this).get(StudentReportViewModel::class.java)
+        studentReportViewModel = ViewModelProviders.of(this).get(StudentReportViewModel::class.java)
 
         root= inflater.inflate(R.layout.student_report_fragment, container, false)
 
@@ -52,6 +53,14 @@ class StudentReportFragment : Fragment() {
 
         recyclerViewStudentReport.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewStudentReport.setHasFixedSize(true)
+
+        studentReportViewModel.schoolName.observe(viewLifecycleOwner, Observer {
+                textViewSchoolName.text = it
+            })
+
+        studentReportViewModel.schoolAddress.observe(viewLifecycleOwner, Observer {
+            textViewAddress.text = it
+        })
 
         return root
     }

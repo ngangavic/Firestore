@@ -44,4 +44,8 @@ class FirestoreRepository {
             .collection(selectedSubject)
     }
 
+    fun getSchoolDetails(): DocumentReference {
+        return database.collection("schools").document(auth.currentUser!!.uid)
+    }
+
 }
