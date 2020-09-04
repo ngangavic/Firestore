@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
@@ -171,16 +172,15 @@ class AddResultsDialog(private val listenerResult: ListenerResult) : DialogFragm
 
                         if (count != i.data.size) {
 
-                            val marks = hashMapOf(
-                                "marks" to 0,
-                                "grade" to "E"
+                            val default = hashMapOf(
+                                "created" to "yes"
                             )
                             database.collection("schools").document(auth.currentUser!!.uid)
                                 .collection("results")
                                 .document(examKeyList[pst])
                                 .collection(spinnerSubject.selectedItem.toString())
                                 .document(i.id)
-//                                .set(marks, SetOptions.merge())
+                                .set(default, SetOptions.merge())
                         } else {
                             dialog!!.dismiss()
                             alert.cancel()

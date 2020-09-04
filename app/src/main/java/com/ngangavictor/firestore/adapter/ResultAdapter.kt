@@ -28,7 +28,12 @@ class ResultAdapter(
 
     override fun onBindViewHolder(holder: ResultHolder, position: Int) {
         holder.textViewAdm.text = "Adm: " + results[position].adm
-        holder.editTextMarks.setText(results[position].marks)
+
+        if (results[position].marks=="null") {
+            holder.editTextMarks.setText("0")
+        }else{
+            holder.editTextMarks.setText(results[position].marks)
+        }
 
         holder.editTextMarks.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
