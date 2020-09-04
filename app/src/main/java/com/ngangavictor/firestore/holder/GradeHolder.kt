@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ngangavictor.firestore.R
 
-class GradeHolder (itemView: View) :
+class GradeHolder(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
 
     val imageViewMore: ImageView = itemView.findViewById(R.id.imageViewMore)
