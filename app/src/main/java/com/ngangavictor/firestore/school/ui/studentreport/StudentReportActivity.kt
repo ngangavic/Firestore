@@ -1,10 +1,9 @@
 package com.ngangavictor.firestore.school.ui.studentreport
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,18 +40,18 @@ class StudentReportActivity : AppCompatActivity() {
 
         studentReportViewModel = ViewModelProviders.of(this).get(StudentReportViewModel::class.java)
 
-        textViewSchoolName=findViewById(R.id.textViewSchoolName)
-        textViewAddress=findViewById(R.id.textViewAddress)
-        textViewName=findViewById(R.id.textViewName)
-        textViewClass=findViewById(R.id.textViewClass)
-        textViewTotal=findViewById(R.id.textViewTotal)
-        textViewMean=findViewById(R.id.textViewMean)
-        textViewMeanGrade=findViewById(R.id.textViewMeanGrade)
+        textViewSchoolName = findViewById(R.id.textViewSchoolName)
+        textViewAddress = findViewById(R.id.textViewAddress)
+        textViewName = findViewById(R.id.textViewName)
+        textViewClass = findViewById(R.id.textViewClass)
+        textViewTotal = findViewById(R.id.textViewTotal)
+        textViewMean = findViewById(R.id.textViewMean)
+        textViewMeanGrade = findViewById(R.id.textViewMeanGrade)
 
-        database= Firebase.firestore
-        auth= Firebase.auth
+        database = Firebase.firestore
+        auth = Firebase.auth
 
-        recyclerViewStudentReport=findViewById(R.id.recyclerViewStudentReport)
+        recyclerViewStudentReport = findViewById(R.id.recyclerViewStudentReport)
 
         recyclerViewStudentReport.layoutManager = LinearLayoutManager(this)
         recyclerViewStudentReport.setHasFixedSize(true)
@@ -66,9 +65,10 @@ class StudentReportActivity : AppCompatActivity() {
         })
 
         database.collection("schools").document(auth.currentUser!!.uid)
-            .collection("results")/**.document("F8QKJPt0ayv0z269mXD1").collection("English").**/.
-            addSnapshotListener { value, error ->
-                for (i in value!!){
+            .collection("results")
+            /**.document("F8QKJPt0ayv0z269mXD1").collection("English").**/
+            .addSnapshotListener { value, error ->
+                for (i in value!!) {
                     Log.e("STUDENT RESULTS", i.id)
                 }
             }

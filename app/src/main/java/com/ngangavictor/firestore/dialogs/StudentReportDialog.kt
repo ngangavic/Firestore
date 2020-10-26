@@ -19,7 +19,7 @@ import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
 import com.ngangavictor.firestore.school.ui.StudentReportViewModel
 
-class StudentReportDialog :DialogFragment(){
+class StudentReportDialog : DialogFragment() {
 
     private lateinit var studentReportViewModel: StudentReportViewModel
 
@@ -35,9 +35,9 @@ class StudentReportDialog :DialogFragment(){
 
     private lateinit var recyclerViewStudentReport: RecyclerView
 
-    lateinit var database:FirebaseFirestore
+    lateinit var database: FirebaseFirestore
 
-    lateinit var auth:FirebaseAuth
+    lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,20 +46,20 @@ class StudentReportDialog :DialogFragment(){
 
         studentReportViewModel = ViewModelProviders.of(this).get(StudentReportViewModel::class.java)
 
-        root= inflater.inflate(R.layout.student_report_fragment, container, false)
+        root = inflater.inflate(R.layout.student_report_fragment, container, false)
 
-        textViewSchoolName=root.findViewById(R.id.textViewSchoolName)
-        textViewAddress=root.findViewById(R.id.textViewAddress)
-        textViewName=root.findViewById(R.id.textViewName)
-        textViewClass=root.findViewById(R.id.textViewClass)
-        textViewTotal=root.findViewById(R.id.textViewTotal)
-        textViewMean=root.findViewById(R.id.textViewMean)
-        textViewMeanGrade=root.findViewById(R.id.textViewMeanGrade)
+        textViewSchoolName = root.findViewById(R.id.textViewSchoolName)
+        textViewAddress = root.findViewById(R.id.textViewAddress)
+        textViewName = root.findViewById(R.id.textViewName)
+        textViewClass = root.findViewById(R.id.textViewClass)
+        textViewTotal = root.findViewById(R.id.textViewTotal)
+        textViewMean = root.findViewById(R.id.textViewMean)
+        textViewMeanGrade = root.findViewById(R.id.textViewMeanGrade)
 
-        database=Firebase.firestore
-        auth=Firebase.auth
+        database = Firebase.firestore
+        auth = Firebase.auth
 
-        recyclerViewStudentReport=root.findViewById(R.id.recyclerViewStudentReport)
+        recyclerViewStudentReport = root.findViewById(R.id.recyclerViewStudentReport)
 
         recyclerViewStudentReport.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewStudentReport.setHasFixedSize(true)
@@ -73,9 +73,10 @@ class StudentReportDialog :DialogFragment(){
         })
 
         database.collection("schools").document(auth.currentUser!!.uid)
-            .collection("results")/**.document("F8QKJPt0ayv0z269mXD1").collection("English").**/.
-            addSnapshotListener { value, error ->
-                for (i in value!!){
+            .collection("results")
+            /**.document("F8QKJPt0ayv0z269mXD1").collection("English").**/
+            .addSnapshotListener { value, error ->
+                for (i in value!!) {
                     Log.e("STUDENT RESULTS", i.id)
                 }
             }

@@ -29,9 +29,9 @@ class ResultAdapter(
     override fun onBindViewHolder(holder: ResultHolder, position: Int) {
         holder.textViewAdm.text = "Adm: " + results[position].adm
 
-        if (results[position].marks=="null") {
+        if (results[position].marks == "null") {
             holder.editTextMarks.setText("0")
-        }else{
+        } else {
             holder.editTextMarks.setText(results[position].marks)
         }
 

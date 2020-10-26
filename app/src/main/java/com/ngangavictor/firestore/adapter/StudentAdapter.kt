@@ -1,22 +1,16 @@
 package com.ngangavictor.firestore.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngangavictor.firestore.R
-import com.ngangavictor.firestore.dialogs.AddExamDialog
-import com.ngangavictor.firestore.dialogs.StudentReportDialog
 import com.ngangavictor.firestore.holder.StudentHolder
 import com.ngangavictor.firestore.models.StudentModel
 import com.ngangavictor.firestore.school.SchoolActivity
-import com.ngangavictor.firestore.school.ui.StudentReportFragment
 import com.ngangavictor.firestore.school.ui.studentreport.StudentReportActivity
 
 class StudentAdapter(
@@ -51,7 +45,7 @@ class StudentAdapter(
                         }
                         R.id.action_view_results_student -> {
 
-                            val ac =context as SchoolActivity
+                            val ac = context as SchoolActivity
 //                            val studentReportDialog = StudentReportDialog().newInstance()
 ////                            addExamDialog.isCancelable = false
 //                            ac.supportFragmentManager.let {
@@ -61,7 +55,7 @@ class StudentAdapter(
 //                                )
 //                            }
 //
-                            context.startActivity(Intent(ac,StudentReportActivity::class.java))
+                            context.startActivity(Intent(ac, StudentReportActivity::class.java))
                             context.finish()
 //                            val studentReportFragment=StudentReportFragment()
 //                            val bundle=Bundle()

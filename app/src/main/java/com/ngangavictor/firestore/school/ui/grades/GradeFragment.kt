@@ -2,7 +2,6 @@ package com.ngangavictor.firestore.school.ui.grades
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,11 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ngangavictor.firestore.R
-import com.ngangavictor.firestore.adapter.ExamAdapter
 import com.ngangavictor.firestore.adapter.GradeAdapter
 import com.ngangavictor.firestore.dialogs.AddGradeDialog
 import com.ngangavictor.firestore.listeners.ListenerGrade
-import com.ngangavictor.firestore.models.ExamModel
 import com.ngangavictor.firestore.models.GradeModel
 
 class GradeFragment : Fragment(), ListenerGrade {
@@ -82,7 +79,7 @@ class GradeFragment : Fragment(), ListenerGrade {
 
         classList = ArrayList()
         subjectList = ArrayList()
-        gradeList=ArrayList()
+        gradeList = ArrayList()
 
         (classList as ArrayList<String>).add("Select Class")
         (subjectList as ArrayList<String>).add("Select Subject")
@@ -189,20 +186,21 @@ class GradeFragment : Fragment(), ListenerGrade {
 //                }
 //            }
 
-        gradeViewModel.getGradeData(selectedClass,selectedSubject).observe(viewLifecycleOwner, Observer {
-            gradeList = it as MutableList<GradeModel>
+        gradeViewModel.getGradeData(selectedClass, selectedSubject)
+            .observe(viewLifecycleOwner, Observer {
+                gradeList = it as MutableList<GradeModel>
 
-            if (gradeList.size!=0) {
+                if (gradeList.size != 0) {
 
-                gradeAdapter = GradeAdapter(
-                    requireContext(), gradeList as ArrayList<GradeModel>, this
-                )
+                    gradeAdapter = GradeAdapter(
+                        requireContext(), gradeList as ArrayList<GradeModel>, this
+                    )
 
-                gradeAdapter.notifyDataSetChanged()
+                    gradeAdapter.notifyDataSetChanged()
 
-                recyclerViewGrade.adapter = gradeAdapter
-            }
-        })
+                    recyclerViewGrade.adapter = gradeAdapter
+                }
+            })
 
     }
 
