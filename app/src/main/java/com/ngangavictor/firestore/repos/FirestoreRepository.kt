@@ -1,5 +1,6 @@
 package com.ngangavictor.firestore.repos
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
@@ -46,6 +47,14 @@ class FirestoreRepository {
 
     fun getSchoolDetails(): DocumentReference {
         return database.collection("schools").document(auth.currentUser!!.uid)
+    }
+
+    fun getStudentResults(examId: String,subjectName:String): CollectionReference {
+        Log.e("Exam ID",examId)
+        Log.e("Exam Subject",subjectName)
+        return database.collection("schools").document(auth.currentUser!!.uid)
+            .collection("results").document(examId).collection(subjectName)
+//        return database.collection("schools").document(auth.currentUser!!.uid).collection("results").document("F8QKJPt0ayv0z269mXD1")//.document(examId)
     }
 
 }

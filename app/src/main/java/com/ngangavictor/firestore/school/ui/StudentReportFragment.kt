@@ -11,12 +11,14 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngangavictor.firestore.R
+import com.ngangavictor.firestore.adapter.ClassAdapter
+import com.ngangavictor.firestore.models.ClassModel
 
 class StudentReportFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = StudentReportFragment()
-    }
+//    companion object {
+//        fun newInstance() = StudentReportFragment()
+//    }
 
     private lateinit var studentReportViewModel: StudentReportViewModel
 
@@ -61,6 +63,20 @@ class StudentReportFragment : Fragment() {
         studentReportViewModel.schoolAddress.observe(viewLifecycleOwner, Observer {
             textViewAddress.text = it
         })
+
+        studentReportViewModel.getStudentResultData("F8QKJPt0ayv0z269mXD1","English").observe(viewLifecycleOwner, Observer {
+
+//            classList = it as MutableList<ClassModel>
+//
+//            classAdapter = ClassAdapter(
+//                requireContext(), classList as ArrayList<ClassModel>, this
+//            )
+//
+//            classAdapter.notifyDataSetChanged()
+//
+//            recyclerViewClasses.adapter = classAdapter
+        })
+
 
         return root
     }
